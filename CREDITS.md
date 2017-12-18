@@ -5,6 +5,8 @@ This project is based on an [example express service provider](https://github.co
 ## Links
 
   + [Running express apps in debug mode](https://expressjs.com/en/guide/debugging.html)
+  + [Setting up a new express app](https://github.com/prof-rossetti/southernct-csc-443-01-201701/blob/master/projects/crud-application/checkpoints/)
+  + [Login.gov developer documentation](https://developers.login.gov/)
 
 ## Development Process
 
@@ -32,3 +34,5 @@ Change in `bin/www` this app's port to 3030 to not conflict with the idp app alr
 ```shell
 DEBUG=my-identity-sp:* npm start # then view localhost:3030 in a browser
 ```
+
+Upgrade local dev server by installing nodemon (`npm install nodemon -g`) and updating the "start" command in `package.json` to invoke it.
