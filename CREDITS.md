@@ -7,8 +7,12 @@ This project is based on an [example express service provider](https://github.co
   + [Running express apps in debug mode](https://expressjs.com/en/guide/debugging.html)
   + [Setting up a new express app](https://github.com/prof-rossetti/southernct-csc-443-01-201701/blob/master/projects/crud-application/checkpoints/)
   + [Login.gov developer documentation](https://developers.login.gov/)
+  + [A previous Express project](https://github.com/data-creative/express-on-rails-starter-app/blob/starter/app.js)
+  + [Passport.js Docs](http://www.passportjs.org/docs/)
 
 ## Development Process
+
+### Setup
 
 Install NVM and Node.js. Install Express Generator:
 
@@ -36,3 +40,10 @@ DEBUG=my-identity-sp:* npm start # then view localhost:3030 in a browser
 ```
 
 Upgrade local dev server by installing nodemon (`npm install nodemon -g`) and updating the "start" command in `package.json` to invoke it.
+
+### Auth
+
+```sh
+npm install passport --save
+npm install express-session --save
+```
