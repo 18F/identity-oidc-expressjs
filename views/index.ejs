@@ -5,7 +5,25 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </body>
+  	<% if (!user) { %>
+
+  		<p>
+  			<a href="/">Home</a> |
+  			<a href="/login">Log In</a>
+  		</p>
+
+      <h2>Welcome! Please log in.</h2>
+
+  	<% } else { %>
+
+  		<p>
+  			<a href="/">Home</a> |
+  			<a href="/account">Account</a> |
+  			<a href="/logout">Log Out</a>
+  		</p>
+
+      <h2>Hello, <%= user.identifier %>.</h2>
+
+  	<% } %>
+  	</body>
 </html>

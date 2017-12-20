@@ -1,14 +1,23 @@
 # Credits, Notes, and Reference
 
-This project is based on an [example express service provider](https://github.com/18F/identity-oidc-nodejs-express) and corresponding instructions in that repo.
-
 ## Links
 
+  + [Login.gov example express service provider](https://github.com/18F/identity-oidc-nodejs-express)
+  + [Previous Project (express app w/ session storage and flash messaging)](https://github.com/data-creative/express-on-rails-starter-app/blob/starter/)
   + [Running express apps in debug mode](https://expressjs.com/en/guide/debugging.html)
   + [Setting up a new express app](https://github.com/prof-rossetti/southernct-csc-443-01-201701/blob/master/projects/crud-application/checkpoints/)
   + [Login.gov developer documentation](https://developers.login.gov/)
+  + [Passport Docs](http://www.passportjs.org/docs/)
+  + [Passport Docs - OpenId Strategy ](http://www.passportjs.org/docs/openid/)
+  + [Passport OpenId Package](https://github.com/jaredhanson/passport-openid)
+  + [Passport OpenId Package - Example App](https://github.com/jaredhanson/passport-openid/blob/master/examples/signon/app.js)
+  + [Connect Flash Package](https://github.com/jaredhanson/connect-flash)
+  + [EJS Layouts](https://colinmackay.scot/tag/express-ejs-layouts/)
+  + [EJS Layouts WAT](https://scotch.io/tutorials/use-ejs-to-template-your-node-application#toc-advanced-layouts)
 
 ## Development Process
+
+### Setup
 
 Install NVM and Node.js. Install Express Generator:
 
@@ -36,3 +45,13 @@ DEBUG=my-identity-sp:* npm start # then view localhost:3030 in a browser
 ```
 
 Upgrade local dev server by installing nodemon (`npm install nodemon -g`) and updating the "start" command in `package.json` to invoke it.
+
+### Auth
+
+Install passport:
+
+```sh
+npm install express-session --save
+npm install passport --save
+npm install passport-openid --save
+```
