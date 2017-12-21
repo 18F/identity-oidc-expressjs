@@ -73,7 +73,7 @@ console.log("JWK", typeof(jwk), jwk)
 //var jwk_json = JSON.parse(jwk)
 //console.log("JWK JSON", typeof(jwk_json), jwk_json)
 
-let load_keystore = jose.JWK.asKeyStore(jwk) // returns a Promise
+let load_keystore = jose.JWK.asKeyStore([jwk]) // returns a Promise
 
 
 
@@ -82,18 +82,19 @@ let load_keystore = jose.JWK.asKeyStore(jwk) // returns a Promise
 //var jwk_json = JSON.parse(fs.readFileSync(jwk_file, "utf-8"));
 //let load_keystore = jose.JWK.asKeyStore(jwk_json) // returns a Promise
 
-//const DISCOVERY_URL = 'https://idp.int.login.gov/'
-const DISCOVERY_URL = 'localhost:3000'
+//const DISCOVERY_URL = 'http://localhost:3000'
+//const DISCOVERY_URL = 'localhost:3000'
+const DISCOVERY_URL = 'https://idp.int.login.gov/'
 let discover_issuer = Issuer.discover(DISCOVERY_URL) // returns a Promise
 
-const CLIENT_ID = 'urn:gov:gsa:openidconnect:sp:mjr-express-dev' // TODO
+const CLIENT_ID = 'urn:gov:gsa:openidconnect:sp:sinatra'
 
 var client_params = {
 	client_id: CLIENT_ID,
 	token_endpoint_auth_method: 'private_key_jwt'
 }
 
-const REDIRECT_URI = 'http://localhost:3030/openid-connect-login'
+const REDIRECT_URI = 'http://localhost:9292/openid-connect-login'
 var strat_params = {
 	redirect_uri: REDIRECT_URI,
 	scope: 'openid profile email phone address',
@@ -105,6 +106,14 @@ var strat_params = {
 Promise.all([load_keystore, discover_issuer])
 	.then(([ks, myIssuer]) => {
 		console.log("Found Issuer: ", myIssuer);
+
+    // USE BASIC AUTH to avoid 401 Unauthorized
+    Issuer.defaultHttpOptions = {
+      headers: {
+        Host: 'idp.int.login.gov',
+        Authorization: `Basic ${process.env.IDP_INT_USERNAME}:${process.env.IDP_INT_PASSWORD}`
+      }
+    }
 
     const oidc_client = new myIssuer.Client(client_params, ks);
 		console.log("Created client: ", oidc_client);
