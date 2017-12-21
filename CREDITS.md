@@ -19,7 +19,7 @@ This project is based on an [example express service provider](https://github.co
 
 ### Setup
 
-Install NVM and Node.js. Install Express Generator:
+Install NVM and Node.js (version 8.9.3). Install Express Generator:
 
 ```shell
 npm install express-generator -g
@@ -38,10 +38,10 @@ Install package dependencies:
 npm install # then .gitignore node_modules
 ```
 
-Change in `bin/www` this app's port to 3030 to not conflict with the idp app already running locally on 3000. Then run this app locally in debug mode:
+Change in `bin/www` this app's port to 9292 to not conflict with the idp app already running locally on 3000, and to coicide with whitelisted client config. Then run this app locally in debug mode:
 
 ```shell
-DEBUG=my-identity-sp:* npm start # then view localhost:3030 in a browser
+DEBUG=my-identity-sp:* npm start # then view localhost:9292 in a browser
 ```
 
 Upgrade local dev server by installing nodemon (`npm install nodemon -g`) and updating the "start" command in `package.json` to invoke it.

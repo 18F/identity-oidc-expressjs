@@ -4,18 +4,12 @@ An example service provider to authenticate users with login.gov using OIDC.
 
 ## Prerequisites
 
-Generate keys:
-
-```sh
-npm run keygen
-```
-
-Run identity-idp locally on port 3111.
+Run identity-idp locally on port 3000.
 
 ## Usage
 
 Run a local webserver:
 
 ```sh
-npm run start
+DEBUG=my-identity-sp:* npm start # then view localhost:9292 in a browser
 ```
