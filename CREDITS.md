@@ -11,7 +11,9 @@ This project is based on an [example express service provider](https://github.co
   + [A previous Express project](https://github.com/data-creative/express-on-rails-starter-app/blob/starter/app.js)
   + [Passport.js Docs](http://www.passportjs.org/docs/)
   + [JSON Web Tokens (JWT)](https://jwt.io/)
-  + [PEM Node Module](https://github.com/Dexus/pem)
+  + [Converting PEM to JWK](https://github.com/dannycoates/pem-jwk)
+  + [PEM vs CRT vs KEY](https://crypto.stackexchange.com/questions/43697/what-is-the-difference-between-pem-csr-key-and-crt)
+  + [Node Jose](https://github.com/cisco/node-jose)
 
 ## Development Process
 

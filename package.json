@@ -17,6 +17,7 @@
     "node-jose": "^0.11.0",
     "openid-client": "^1.19.0",
     "passport": "^0.4.0",
+    "pem-jwk": "^1.5.1",
     "serve-favicon": "~2.4.5"
   }
 }

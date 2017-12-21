@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 var passport = require('passport');
 var session = require('express-session');
 var fs = require('fs'); // used to read in the key file
+var pem2jwk = require('pem-jwk').pem2jwk // used to convert key file from PEM to JWK
 var jose = require('node-jose'); // used to parse the keystore
 var Issuer = require('openid-client').Issuer;
 var Strategy = require('openid-client').Strategy;
@@ -60,9 +61,26 @@ var authroutes = require('./routes/authenticated_routes')(app, passport);
 
 
 
-var jwk_file = "./keys/local-idp/full_key.jwk"
-var jwk_json = JSON.parse(fs.readFileSync(jwk_file, "utf-8"));
-let load_keystore = jose.JWK.asKeyStore(jwk_json) // returns a Promise
+
+
+var pem_file = './keys/local/sinatra_demo_sp.key'
+var pem = fs.readFileSync(pem_file, 'ascii')
+console.log("PEM", pem)
+
+var jwk = pem2jwk(pem)
+console.log("JWK", typeof(jwk), jwk)
+
+//var jwk_json = JSON.parse(jwk)
+//console.log("JWK JSON", typeof(jwk_json), jwk_json)
+
+let load_keystore = jose.JWK.asKeyStore(jwk) // returns a Promise
+
+
+
+
+//var jwk_file = "./keys/local-idp/full_key.jwk"
+//var jwk_json = JSON.parse(fs.readFileSync(jwk_file, "utf-8"));
+//let load_keystore = jose.JWK.asKeyStore(jwk_json) // returns a Promise
 
 //const DISCOVERY_URL = 'https://idp.int.login.gov/'
 const DISCOVERY_URL = 'localhost:3000'
