@@ -47,6 +47,7 @@ passport.deserializeUser(function(user, done) {
   done( null, user);
 })
 
+var authroutes = require('./routes/authenticated_routes')(app, passport);
 
 
 
@@ -57,49 +58,50 @@ passport.deserializeUser(function(user, done) {
 
 
 var jwk_file = "./keys/full_key.jwk"
-var oidc_discover_url = "https://mitreid.org" // https://idp.int.login.gov/.well-known/openid-configuration
-//var client_params = {
-//	client_id: 'login-nodejs-govt-test',
-//	token_endpoint_auth_method: 'private_key_jwt'
-//}
-//var strat_params = {
-//	redirect_uri: 'http://localhost:3000/openid-connect-login',
-//	scope: 'openid profile email phone address',
-//	response: ['userinfo']
-//}
-
-var authroutes = require('./routes/authenticated_routes')(app, passport);
 var jwk_json = JSON.parse(fs.readFileSync(jwk_file, "utf-8"));
-
 let load_keystore = jose.JWK.asKeyStore(jwk_json) // returns a Promise
+
+var oidc_discover_url = "https://mitreid.org" // https://idp.int.login.gov/.well-known/openid-configuration
 let discover_issuer = Issuer.discover(oidc_discover_url) // returns a Promise
 
-//// Create a client, and use it set up a Strategy for passport to use
-//// since we need both the Issuer and the keystore, we'll use Promise.all()
-//Promise.all([load_keystore, discover_issuer])
-//	.then(([ks, myIssuer]) => {
-//		console.log("Found Issuer: ", myIssuer);
-//		const oidc_client = new myIssuer.Client(client_params, ks);
-//		console.log("Created client: ", oidc_client);
-//
-//		// create a strategy along with the function that processes the results
-//		passport.use('oidc', new Strategy({client: oidc_client, params: strat_params}, (tokenset, userinfo, done) => {
-//			// we're just loging out the tokens. Don't do this in production
-//			console.log('tokenset', tokenset);
-//			console.log('access_token', tokenset.access_token);
-//			console.log('id_token', tokenset.id_token);
-//			console.log('claims', tokenset.claims);
-//			console.log('userinfo', userinfo);
-//
-//			// to do anything, we need to return a user.
-//			// if you are storing information in your application this would use some middlewhere and a database
-//			// the call would typically look like
-//			// User.findOrCreate(userinfo.sub, userinfo, (err, user) => { done(err, user); });
-//			// we'll just pass along the userinfo object as a simple 'user' object
-//			return done(null, userinfo);
-//		}));
-//	}) // close off the .then()
-//	.catch((err) => {console.log("Error in OIDC setup", err);});
+var client_params = {
+	client_id: 'login-nodejs-govt-test',
+	token_endpoint_auth_method: 'private_key_jwt'
+}
+
+var strat_params = {
+	redirect_uri: 'http://localhost:3000/openid-connect-login',
+	scope: 'openid profile email phone address',
+	response: ['userinfo']
+}
+
+// Create a client, and use it set up a Strategy for passport to use
+// since we need both the Issuer and the keystore, we'll use Promise.all()
+Promise.all([load_keystore, discover_issuer])
+	.then(([ks, myIssuer]) => {
+		console.log("Found Issuer: ", myIssuer);
+
+    const oidc_client = new myIssuer.Client(client_params, ks);
+		console.log("Created client: ", oidc_client);
+
+		// create a strategy along with the function that processes the results
+		passport.use('oidc', new Strategy({client: oidc_client, params: strat_params}, (tokenset, userinfo, done) => {
+			// we're just loging out the tokens. Don't do this in production
+			console.log('tokenset', tokenset);
+			console.log('access_token', tokenset.access_token);
+			console.log('id_token', tokenset.id_token);
+			console.log('claims', tokenset.claims);
+			console.log('userinfo', userinfo);
+
+			// to do anything, we need to return a user.
+			// if you are storing information in your application this would use some middlewhere and a database
+			// the call would typically look like
+			// User.findOrCreate(userinfo.sub, userinfo, (err, user) => { done(err, user); });
+			// we'll just pass along the userinfo object as a simple 'user' object
+			return done(null, userinfo);
+		}));
+	}) // close off the .then()
+	.catch((err) => {console.log("Error in OIDC setup", err);});
 
 
 
