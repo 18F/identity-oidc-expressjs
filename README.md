@@ -10,6 +10,8 @@ Generate keys:
 npm run keygen
 ```
 
+Run identity-idp locally on port 3111.
+
 ## Usage
 
 Run a local webserver:

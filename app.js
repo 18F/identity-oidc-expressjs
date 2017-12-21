@@ -52,28 +52,71 @@ var authroutes = require('./routes/authenticated_routes')(app, passport);
 
 
 
+// WELL KNOWN CONFIG:
+//{
+//	"acr_values_supported": ["http://idmanagement.gov/ns/assurance/loa/1", "http://idmanagement.gov/ns/assurance/loa/3"],
+//	"claims_supported": ["iss", "sub", "email", "email_verified", "address", "phone", "phone_verified", "given_name", "family_name", "birthdate", "social_security_number"],
+//	"grant_types_supported": ["authorization_code"],
+//	"response_types_supported": ["code"],
+//	"scopes_supported": ["address", "email", "openid", "phone", "profile", "profile:birthdate", "profile:name", "social_security_number"],
+//	"subject_types_supported": ["pairwise"],
+//	"authorization_endpoint": "http://localhost:3000/openid_connect/authorize",
+//	"issuer": "http://localhost:3000/",
+//	"jwks_uri": "http://localhost:3000/api/openid_connect/certs",
+//	"service_documentation": "https://pages.18f.gov/identity-dev-docs/",
+//	"token_endpoint": "http://localhost:3000/api/openid_connect/token",
+//	"userinfo_endpoint": "http://localhost:3000/api/openid_connect/userinfo",
+//	"end_session_endpoint": "http://localhost:3000/openid_connect/logout",
+//	"id_token_signing_alg_values_supported": ["RS256"],
+//	"token_endpoint_auth_methods_supported": ["private_key_jwt"],
+//	"token_endpoint_auth_signing_alg_values_supported": ["RS256"]
+//}
+
+// AUTHORIZATION REQUEST:
+//
+//https://idp.int.login.gov/openid_connect/authorize?
+//  acr_values=http%3A%2F%2Fidmanagement.gov%2Fns%2Fassurance%2Floa%2F1&
+//  client_id=${CLIENT_ID}&
+//  nonce=${NONCE}&
+//  prompt=select_account&
+//  redirect_uri=${REDIRECT_URI}&
+//  response_type=code&
+//  scope=openid+email&
+//  state=abcdefghijklmnopabcdefghijklmnop
 
 
-
-
+// const IDP_USER = 'USERNAME'
+// const IDP_PASSWORD = 'PASSWORD'
+// const ACR_VALUES = 'http://idmanagement.gov/ns/assurance/loa/1'
 
 var jwk_file = "./keys/full_key.jwk"
 var jwk_json = JSON.parse(fs.readFileSync(jwk_file, "utf-8"));
 let load_keystore = jose.JWK.asKeyStore(jwk_json) // returns a Promise
 
-var oidc_discover_url = "https://mitreid.org" // https://idp.int.login.gov/.well-known/openid-configuration
-let discover_issuer = Issuer.discover(oidc_discover_url) // returns a Promise
+// appends "/.well-known/openid-configuration" to these:
+const DISCOVERY_URL = "https://mitreid.org"
+//const DISCOVERY_URL = 'https://idp.int.login.gov/'
+//const DISCOVERY_URL = 'http://localhost:3000'
+let discover_issuer = Issuer.discover(DISCOVERY_URL) // returns a Promise
 
+const CLIENT_ID = 'login-nodejs-govt-test'
+//const CLIENT_ID = 'urn:gov:gsa:openidconnect:sp:sinatra'
 var client_params = {
-	client_id: 'login-nodejs-govt-test',
+	client_id: CLIENT_ID,
 	token_endpoint_auth_method: 'private_key_jwt'
 }
 
+//const REDIRECT_URI = 'http://localhost:3030/openid-connect-login'
+const REDIRECT_URI = 'http://localhost:3000/openid-connect-login'
 var strat_params = {
-	redirect_uri: 'http://localhost:3000/openid-connect-login',
+	redirect_uri: REDIRECT_URI,
 	scope: 'openid profile email phone address',
 	response: ['userinfo']
 }
+
+
+
+
 
 // Create a client, and use it set up a Strategy for passport to use
 // since we need both the Issuer and the keystore, we'll use Promise.all()
@@ -84,14 +127,22 @@ Promise.all([load_keystore, discover_issuer])
     const oidc_client = new myIssuer.Client(client_params, ks);
 		console.log("Created client: ", oidc_client);
 
+
+
+
+
 		// create a strategy along with the function that processes the results
 		passport.use('oidc', new Strategy({client: oidc_client, params: strat_params}, (tokenset, userinfo, done) => {
-			// we're just loging out the tokens. Don't do this in production
-			console.log('tokenset', tokenset);
-			console.log('access_token', tokenset.access_token);
-			console.log('id_token', tokenset.id_token);
-			console.log('claims', tokenset.claims);
-			console.log('userinfo', userinfo);
+
+
+
+      // we're just loging out the tokens. Don't do this in production
+			console.log('TOKEN SET:', tokenset);
+			//console.log('access_token', tokenset.access_token);
+			//console.log('id_token', tokenset.id_token);
+			//console.log('claims', tokenset.claims);
+
+			console.log('USER INFO:', userinfo);
 
 			// to do anything, we need to return a user.
 			// if you are storing information in your application this would use some middlewhere and a database
