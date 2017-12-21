@@ -7,8 +7,10 @@ This project is based on an [example express service provider](https://github.co
   + [Running express apps in debug mode](https://expressjs.com/en/guide/debugging.html)
   + [Setting up a new express app](https://github.com/prof-rossetti/southernct-csc-443-01-201701/blob/master/projects/crud-application/checkpoints/)
   + [Login.gov developer documentation](https://developers.login.gov/)
+  + [Login.gov OIDC documentation](https://developers.login.gov/openid-connect/#developer-portal)
   + [A previous Express project](https://github.com/data-creative/express-on-rails-starter-app/blob/starter/app.js)
   + [Passport.js Docs](http://www.passportjs.org/docs/)
+  + [JSON Web Tokens (JWT)](https://jwt.io/)
 
 ## Development Process
 
@@ -46,4 +48,20 @@ Upgrade local dev server by installing nodemon (`npm install nodemon -g`) and up
 ```sh
 npm install passport --save
 npm install express-session --save
+```
+
+Auto Discovery URL: https://idp.int.login.gov/.well-known/openid-configuration
+
+Example Request:
+
+```
+https://idp.int.login.gov/openid_connect/authorize?
+  acr_values=http%3A%2F%2Fidmanagement.gov%2Fns%2Fassurance%2Floa%2F1&
+  client_id=${CLIENT_ID}&
+  nonce=${NONCE}&
+  prompt=select_account&
+  redirect_uri=${REDIRECT_URI}&
+  response_type=code&
+  scope=openid+email&
+  state=abcdefghijklmnopabcdefghijklmnop
 ```
