@@ -4,7 +4,9 @@ An example service provider to authenticate users with login.gov using OIDC.
 
 ## Prerequisites
 
-Run identity-idp locally on port 3000.
+Install NVM and Node.js (version 8.9.3).
+
+Run [identity-idp](https://github.com/18F/identity-idp/) at localhost:3000.
 
 ## Usage
 
