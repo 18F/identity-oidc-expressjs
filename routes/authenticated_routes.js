@@ -1,7 +1,7 @@
 module.exports = function(app, passport) {
     app.get('/login', passport.authenticate('oidc'))
 
-    app.get('/openid-connect-login',
+    app.get('/auth/result',
       passport.authenticate('oidc', {
         successRedirect:'/profile',
         failureRedirect:'/'

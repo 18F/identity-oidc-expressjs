@@ -14,6 +14,8 @@ This project is based on an [example express service provider](https://github.co
   + [Converting PEM to JWK](https://github.com/dannycoates/pem-jwk)
   + [PEM vs CRT vs KEY](https://crypto.stackexchange.com/questions/43697/what-is-the-difference-between-pem-csr-key-and-crt)
   + [Node Jose](https://github.com/cisco/node-jose)
+  + [18F Example Client Implementation](https://github.com/18F/fs-intake-module/blob/master/server/src/auth/login-gov.es6)
+  + [Node.js OpenID Client](https://github.com/panva/node-openid-client)
 
 ## Development Process
 
