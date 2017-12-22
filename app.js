@@ -7,8 +7,6 @@ var bodyParser = require('body-parser');
 var passport = require('passport');
 var session = require('express-session');
 
-var loginGov = require('./auth/loginGov')
-
 var index = require('./routes/index');
 var users = require('./routes/users');
 
@@ -45,7 +43,7 @@ passport.deserializeUser(function(user, done) {
   done( null, user);
 })
 
-var authroutes = require('./routes/authenticated_routes')(app, passport);
+var auth = require('./routes/auth')(app, passport);
 
 
 
@@ -53,24 +51,20 @@ var authroutes = require('./routes/authenticated_routes')(app, passport);
 
 
 
-
-
-
-
+var crypto = require("crypto")
 var fs = require('fs'); // used to read in the key file
 var pem2jwk = require('pem-jwk').pem2jwk // used to convert key file from PEM to JWK
 var jose = require('node-jose'); // used to parse the keystore
 var Issuer = require('openid-client').Issuer;
 var Strategy = require('openid-client').Strategy;
-var crypto = require("crypto")
 
-var pem_file = './keys/local/sinatra_demo_sp.key'
-var pem = fs.readFileSync(pem_file, 'ascii')
-console.log("PEM", pem)
-var jwk = pem2jwk(pem)
+var keyFile = './keys/local/sinatra_demo_sp.key'
+var key = fs.readFileSync(keyFile, 'ascii')
+console.log("KEY", key)
+var jwk = pem2jwk(key)
 console.log("JWK", typeof(jwk), jwk)
-//let loadKeystore = jose.JWK.asKeyStore({keys: [jwk]}) // returns a Promise
-let loadKeystore = jose.JWK.asKeyStore([jwk]) // returns a Promise
+var keys = [jwk]
+let loadKeystore = jose.JWK.asKeyStore(keys) // returns a Promise
 
 function randomString(length) {
   return crypto.randomBytes(length).toString('hex')
@@ -123,7 +117,7 @@ loadKeystore.then(function(keystore){
     response_type: 'code',
     acr_values: 'http://idmanagement.gov/ns/assurance/loa/1',
     scope: 'openid email',
-    redirect_uri: 'localhost:9292/auth/result', // error: doesn't match registered callback url
+    redirect_uri: 'localhost:9393/auth/login-gov/callback',
     nonce: randomString(32),
     state: randomString(32),
     prompt: 'select_account'
@@ -142,7 +136,6 @@ loadKeystore.then(function(keystore){
 }).catch(function(err){
   console.log("KEY STORE ERROR", err)
 })
-
 
 
 
