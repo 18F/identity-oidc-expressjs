@@ -4,18 +4,27 @@ This project is based on an [example express service provider](https://github.co
 
 ## Links
 
-  + [Running express apps in debug mode](https://expressjs.com/en/guide/debugging.html)
-  + [Setting up a new express app](https://github.com/prof-rossetti/southernct-csc-443-01-201701/blob/master/projects/crud-application/checkpoints/)
+### Login.gov
+
   + [Login.gov developer documentation](https://developers.login.gov/)
   + [Login.gov OIDC documentation](https://developers.login.gov/openid-connect/#developer-portal)
+  + [Registered Login.gov Clients](https://github.com/18F/identity-idp/blob/master/config/service_providers.yml#L125-L129)
+  + [18F Example Client Implementation](https://github.com/18F/fs-intake-module/blob/master/server/src/auth/login-gov.es6)
+
+### Node, Express, Passport
+
+  + [Running express apps in debug mode](https://expressjs.com/en/guide/debugging.html)
+  + [Setting up a new express app](https://github.com/prof-rossetti/southernct-csc-443-01-201701/blob/master/projects/crud-application/checkpoints/)
   + [A previous Express project](https://github.com/data-creative/express-on-rails-starter-app/blob/starter/app.js)
   + [Passport.js Docs](http://www.passportjs.org/docs/)
+
+### Auth
+
+  + [OpenID Client](https://github.com/panva/node-openid-client)
   + [JSON Web Tokens (JWT)](https://jwt.io/)
   + [Converting PEM to JWK](https://github.com/dannycoates/pem-jwk)
   + [PEM vs CRT vs KEY](https://crypto.stackexchange.com/questions/43697/what-is-the-difference-between-pem-csr-key-and-crt)
   + [Node Jose](https://github.com/cisco/node-jose)
-  + [18F Example Client Implementation](https://github.com/18F/fs-intake-module/blob/master/server/src/auth/login-gov.es6)
-  + [Node.js OpenID Client](https://github.com/panva/node-openid-client)
 
 ## Development Process
 

@@ -6,14 +6,15 @@ module.exports = function(app, passport) {
         successRedirect:'/profile',
         failureRedirect:'/'
       }
-    )) // callback
+    ))
 
     app.get('/profile', isLoggedIn, function(req, res){
-        console.log("In profile");
+        console.log("USER PROFILE", req.user)
+
         res.render('profile', {
           title: 'Express - profile',
           user: req.user.name
-        }) // TODO: add profile info here
+        })
     })
 
     app.get('/logout', function(req, res) {
@@ -24,9 +25,9 @@ module.exports = function(app, passport) {
 
 function isLoggedIn(req, res, next) {
     if (req.isAuthenticated()) {
-        console.log("Is authenticated");
+        console.log("IS AUTHENTICATED");
         return next();
     }
-    console.log("Not Authenticated");
+    console.log("NOT AUTHENTICATED");
     res.redirect('/');
 }
