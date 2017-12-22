@@ -194,7 +194,7 @@ loadKeystore.then(function(keystore){
     response_type: 'code',
     acr_values: 'http://idmanagement.gov/ns/assurance/loa/1',
     scope: 'openid email',
-    redirect_uri: 'http://localhost:9292/auth/result',
+    redirect_uri: 'localhost:9292/auth/result', // error: doesn't match registered callback url
     nonce: randomString(32),
     state: randomString(32),
     prompt: 'select_account'

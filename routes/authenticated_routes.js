@@ -1,12 +1,17 @@
 module.exports = function(app, passport) {
     app.get('/login', passport.authenticate('oidc'))
 
-    app.get('/auth/result',
+    app.get(
+      '/auth/result',
       passport.authenticate('oidc', {
-        successRedirect:'/profile',
+        //successRedirect:'/profile',
         failureRedirect:'/'
+      }),
+      function(req, res){
+        console.log("CALLBACK PARAMS", res.query)
+        res.redirect("/profile")
       }
-    ))
+    )
 
     app.get('/profile', isLoggedIn, function(req, res){
         console.log("USER PROFILE", req.user)
