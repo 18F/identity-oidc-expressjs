@@ -106,7 +106,7 @@ loadKeystore.then(function(keystore){
 
   var client = new issuer.Client(
     {
-      client_id: 'urn:gov:gsa:openidconnect:sp:sinatra',
+      client_id: 'urn:gov:gsa:openidconnect:sp:expressjs',
       token_endpoint_auth_method: 'private_key_jwt',
       id_token_signed_response_alg: 'RS256'
     }, keystore
@@ -117,7 +117,7 @@ loadKeystore.then(function(keystore){
     response_type: 'code',
     acr_values: 'http://idmanagement.gov/ns/assurance/loa/1',
     scope: 'openid email',
-    redirect_uri: 'localhost:9393/auth/login-gov/callback',
+    redirect_uri: 'http://localhost:9393/auth/login-gov/callback',
     nonce: randomString(32),
     state: randomString(32),
     prompt: 'select_account'

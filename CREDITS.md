@@ -26,7 +26,7 @@ This project is based on an [example express service provider](https://github.co
   + [PEM vs CRT vs KEY](https://crypto.stackexchange.com/questions/43697/what-is-the-difference-between-pem-csr-key-and-crt)
   + [Node Jose](https://github.com/cisco/node-jose)
 
-## Development Process
+## Development Process Notes
 
 ### Setup
 
@@ -152,3 +152,30 @@ https://idp.int.login.gov/openid_connect/authorize?
   scope=openid+email&
   state=abcdefghijklmnopabcdefghijklmnop
 ```
+
+Login.gov will respond with client configuration errors like "Client Bad client_id" and "Redirect uri redirect_uri does match registered redirect_uri" until the service provider is properly configured on the respective login.gov environment.
+
+To configure a locally-running login.gov instance, add a new cert to identity-idp repository as **certs/sp/sp_expressjs_demo.crt**, add the below entry to the identity-idp repository's **config/service_providers.yml** file, then finally run `make setup` or `bin/rake db:seed` or some other command to seed the database with your new service provider.
+
+```yml
+  'urn:gov:gsa:openidconnect:sp:expressjs':
+    redirect_uris:
+      - 'localhost:9393/'
+      - 'localhost:9393/auth/login-gov/callback'
+      - 'http://localhost:9393/'
+      - 'http://localhost:9393/auth/login-gov/callback'
+    cert: 'sp_expressjs_demo'
+    friendly_name: 'Example OIDC Client (Express.js)'
+```
+
+After the database contains the new provider, authorization responses should stop returning client configuration errors.
+
+## Testing Notes
+
+To test:
+
+  + Visit the homepage
+  + Click the "Login" link
+  + Expect to see a login.gov login page
+  + Input name and password and click "Login"
+  + Expect to be redirected
