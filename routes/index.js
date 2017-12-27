@@ -9,7 +9,7 @@ router.get('/profile', authenticate, function(req, res){
     console.log("USER PROFILE", req.user)
 
     res.render('profile', {
-      user: req.user.name
+      user: req.user
     })
 })
 

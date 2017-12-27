@@ -60,9 +60,9 @@ var Strategy = require('openid-client').Strategy;
 
 var keyFile = './keys/local/sinatra_demo_sp.key'
 var key = fs.readFileSync(keyFile, 'ascii')
-console.log("KEY", key)
+//console.log("KEY", key)
 var jwk = pem2jwk(key)
-console.log("JWK", typeof(jwk), jwk)
+//console.log("JWK", typeof(jwk), jwk)
 var keys = [jwk]
 let loadKeystore = jose.JWK.asKeyStore(keys) // returns a Promise
 
@@ -71,7 +71,7 @@ function randomString(length) {
 }
 
 loadKeystore.then(function(keystore){
-  console.log("KEY STORE", keystore)
+  //console.log("KEY STORE", keystore)
 
   // Problems using localhost because auto-discovery wants to use SSL, results in Request Errors
   // Problems using INT because of basic auth
@@ -122,7 +122,7 @@ loadKeystore.then(function(keystore){
     state: randomString(32),
     prompt: 'select_account'
   }
-  console.log("PARAMS", params)
+  //console.log("PARAMS", params)
 
   const strategy = new Strategy({client: client, params: params}, function(tokenset, userinfo, done) {
     console.log("TOKEN SET", tokenset)
