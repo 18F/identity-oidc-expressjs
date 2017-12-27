@@ -9,6 +9,7 @@ router.get('/profile', authenticate, function(req, res){
     console.log("USER PROFILE", req.user)
 
     res.render('profile', {
+      title: 'Example Login.gov OIDC Client (Express.js)',
       user: req.user
     })
 })

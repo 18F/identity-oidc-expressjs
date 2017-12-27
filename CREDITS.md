@@ -168,7 +168,9 @@ To configure a locally-running login.gov instance, add a new cert to identity-id
     friendly_name: 'Example OIDC Client (Express.js)'
 ```
 
-After the database contains the new provider, authorization responses should stop returning client configuration errors.
+After the database contains the new provider, authorization responses should stop returning client configuration errors. They do.
+
+Subsequent "token requests" made from this app to the identity-idp result in `connect ECONNREFUSED 127.0.0.1:3000` errors. Trying to request `127.0.0.1:3000` instead of `localhost:3000` in a browser produces the same error. This was the same error that occurred when trying to auto-discover the local identity-idp. Basically some part of the stack of this oidc/passport/express application is trying to send a request to `127.0.0.1` but not able to find the server that way. After lots of googling, finally an SO post [reveals](https://stackoverflow.com/a/42157085/670433) an alternative strategy for running the identity-idp locally: `rails s -b 0.0.0.0`. Not sure what the -b option does, because it is not included in the help documentation. But it allows the client application to find the server. And it allows the auto-discovery.
 
 ## Testing Notes
 
