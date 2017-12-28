@@ -59,30 +59,24 @@ var jose = require('node-jose'); // used to parse the keystore
 var Issuer = require('openid-client').Issuer;
 var Strategy = require('openid-client').Strategy;
 
-jose.JWK.asKeyStore(loginGov.keys).then(function(keystore){
-  console.log("KEYSTORE", keystore)
+Promise.all([
+  jose.JWK.asKeyStore(loginGov.keys),
+  Issuer.discover(loginGov.discoveryUrl)
+]).then(function([keystore, issuer]){
+  var client = new issuer.Client(loginGov.clientOptions, keystore)
 
-  Issuer.discover(loginGov.discoveryUrl).then(function(issuer){
-    console.log("ISSUER", typeof(issuer), issuer)
-
-    var client = new issuer.Client(loginGov.clientOptions, keystore)
-    console.log("CLIENT", typeof(client), client)
-
-    const strategy = new Strategy({client: client, params: loginGov.params}, function(tokenset, userinfo, done) {
-      console.log("TOKEN SET", tokenset)
-      console.log("USER INFO", userinfo)
-      return done(null, userinfo);
-    })
-
-    passport.use("oidc", strategy)
-
-  }).catch(function(err){
-    console.log("LOGIN.GOV DISCOVERY ERROR", err)
+  const strategy = new Strategy({client: client, params: loginGov.params}, function(tokenset, userinfo, done) {
+    console.log("TOKEN SET", tokenset)
+    console.log("USER INFO", userinfo)
+    return done(null, userinfo);
   })
 
+  passport.use("oidc", strategy)
+
 }).catch(function(err){
-  console.log("LOGIN.GOV KEYSTORE ERROR", err)
+  console.log("LOGIN.GOV CONFIGURATION ERROR", err)
 })
+
 
 
 
