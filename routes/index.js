@@ -8,14 +8,14 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/profile', authenticate, function(req, res){
-    res.render('profile', {
+    res.render('page', {
       heading: 'Profile Page',
       user: req.user
     })
 })
 
 router.get('/other', authenticate, function(req, res){
-    res.render('other', {
+    res.render('page', {
       heading: 'Other Page',
       user: req.user
     })
