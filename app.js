@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 var passport = require('passport');
 var session = require('express-session');
 
+var loginGov = require('./login-gov')
 var index = require('./routes/index');
 var users = require('./routes/users');
 
@@ -53,68 +54,34 @@ var auth = require('./routes/auth')(app, passport);
 
 
 
-var crypto = require("crypto")
-var fs = require('fs'); // used to read in the key file
-var pem2jwk = require('pem-jwk').pem2jwk // used to convert key file from PEM to JWK
+
 var jose = require('node-jose'); // used to parse the keystore
 var Issuer = require('openid-client').Issuer;
 var Strategy = require('openid-client').Strategy;
 
-var keyFile = './keys/local/sinatra_demo_sp.key'
-var key = fs.readFileSync(keyFile, 'ascii')
-//console.log("KEY", key)
-var jwk = pem2jwk(key)
-//console.log("JWK", typeof(jwk), jwk)
-var keys = [jwk]
-let loadKeystore = jose.JWK.asKeyStore(keys) // returns a Promise
+jose.JWK.asKeyStore(loginGov.keys).then(function(keystore){
+  console.log("KEYSTORE", keystore)
 
-function randomString(length) {
-  return crypto.randomBytes(length).toString('hex')
-}
-
-loadKeystore.then(function(keystore){
-  //console.log("KEY STORE", keystore)
-
-  const DISCOVERY_URL = 'http://localhost:3000' // 'https://idp.int.login.gov/'
-  Issuer.discover(DISCOVERY_URL).then(function(issuer){
+  Issuer.discover(loginGov.discoveryUrl).then(function(issuer){
     console.log("ISSUER", typeof(issuer), issuer)
 
-    var client = new issuer.Client(
-      {
-        client_id: 'urn:gov:gsa:openidconnect:sp:expressjs',
-        token_endpoint_auth_method: 'private_key_jwt',
-        id_token_signed_response_alg: 'RS256'
-      }, keystore
-    )
+    var client = new issuer.Client(loginGov.clientOptions, keystore)
     console.log("CLIENT", typeof(client), client)
 
-    const SCOPE = 'openid email address phone profile:birthdate profile:name profile social_security_number'
-    const params = {
-      response_type: 'code',
-      acr_values: 'http://idmanagement.gov/ns/assurance/loa/1',
-      scope: SCOPE,
-      redirect_uri: 'http://localhost:9393/auth/login-gov/callback',
-      nonce: randomString(32),
-      state: randomString(32),
-      prompt: 'select_account'
-    }
-    console.log("PARAMS", params)
-
-    const strategy = new Strategy({client: client, params: params}, function(tokenset, userinfo, done) {
+    const strategy = new Strategy({client: client, params: loginGov.params}, function(tokenset, userinfo, done) {
       console.log("TOKEN SET", tokenset)
       console.log("USER INFO", userinfo)
-
       return done(null, userinfo);
     })
 
     passport.use("oidc", strategy)
 
   }).catch(function(err){
-    console.log("DISCOVERY ERROR", err)
+    console.log("LOGIN.GOV DISCOVERY ERROR", err)
   })
 
 }).catch(function(err){
-  console.log("KEY STORE ERROR", err)
+  console.log("LOGIN.GOV KEYSTORE ERROR", err)
 })
 
 
