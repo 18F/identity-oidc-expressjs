@@ -6,12 +6,14 @@
 
   + [Login.gov developer documentation](https://developers.login.gov/)
   + [Login.gov OIDC documentation](https://developers.login.gov/openid-connect/#developer-portal)
-  + [MIT Client Tutorial](https://github.com/18F/identity-oidc-nodejs-express)
-  + [Registered Login.gov Clients](https://github.com/18F/identity-idp/blob/master/config/service_providers.yml#L125-L129)
-  + [18F Client Implementation](https://github.com/18F/fs-intake-module/blob/master/server/src/auth/login-gov.es6)
+  + [Login.gov Registered Clients](https://github.com/18F/identity-idp/blob/master/config/service_providers.yml#L125-L129)
+  + [Login.gov OIDC Sinatra Client](https://github.com/18F/identity-sp-sinatra)
+  + [MIT OIDC Tutorial](https://github.com/18F/identity-oidc-nodejs-express)
+  + [18F Login.gov Express.js Client Implementation](https://github.com/18F/fs-intake-module/blob/master/server/src/auth/login-gov.es6)
 
 ### Node, Express, Passport
 
+  + [Previous Express.js Project](https://github.com/data-creative/express-on-rails-starter-app/)
   + [Running express apps in debug mode](https://expressjs.com/en/guide/debugging.html)
   + [Setting up a new express app](https://github.com/prof-rossetti/southernct-csc-443-01-201701/blob/master/projects/crud-application/checkpoints/)
   + [A previous Express project](https://github.com/data-creative/express-on-rails-starter-app/blob/starter/app.js)
@@ -170,6 +172,19 @@ To configure a locally-running login.gov instance, add a new cert to identity-id
 After the database contains the new provider, authorization responses should stop returning client configuration errors. They do.
 
 Subsequent "token requests" made from this app to the identity-idp result in `connect ECONNREFUSED 127.0.0.1:3000` errors. Trying to request `127.0.0.1:3000` instead of `localhost:3000` in a browser produces the same error. This was the same error that occurred when trying to auto-discover the local identity-idp. Basically some part of the stack of this oidc/passport/express application is trying to send a request to `127.0.0.1` but not able to find the server that way. After lots of googling, finally an SO post [reveals](https://stackoverflow.com/a/42157085/670433) an alternative strategy for running the identity-idp locally: `rails s -b 0.0.0.0`. Not sure what the -b option does, because it is not included in the help documentation. But it allows the client application to find the server. And it allows the auto-discovery.
+
+### Views
+
+Conditional checks for user:
+
+```js
+<% if(typeof(user) == "undefined"){ %>
+  <a href="/auth/login-gov/login">Login</a>
+<% } else { %>
+  Welcome, <%= user.email %> |
+  <a href="/auth/login-gov/logout">Logout</a>
+<% } %>
+```
 
 ## Testing Notes
 
