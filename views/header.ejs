@@ -1,0 +1,15 @@
+<h1><%= title %></h1>
+
+<p>
+  <a href="/">Home</a> |
+  <a href="/profile">Profile</a> |
+  <a href="/other">Other</a> |
+
+<% if(typeof(user) == "undefined"){ %>
+  <a href="/auth/login-gov/login">Login</a>
+<% } else { %>
+  Welcome, <%= user.email %> |
+  <a href="/auth/login-gov/logout">Logout</a>
+<% } %>
+
+</p>

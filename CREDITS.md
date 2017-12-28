@@ -1,15 +1,14 @@
 # Credits, Notes, and Reference
 
-This project is based on an [example express service provider](https://github.com/18F/identity-oidc-nodejs-express) and corresponding instructions in that repo.
-
 ## Links
 
 ### Login.gov
 
   + [Login.gov developer documentation](https://developers.login.gov/)
   + [Login.gov OIDC documentation](https://developers.login.gov/openid-connect/#developer-portal)
+  + [MIT Client Tutorial](https://github.com/18F/identity-oidc-nodejs-express)
   + [Registered Login.gov Clients](https://github.com/18F/identity-idp/blob/master/config/service_providers.yml#L125-L129)
-  + [18F Example Client Implementation](https://github.com/18F/fs-intake-module/blob/master/server/src/auth/login-gov.es6)
+  + [18F Client Implementation](https://github.com/18F/fs-intake-module/blob/master/server/src/auth/login-gov.es6)
 
 ### Node, Express, Passport
 
