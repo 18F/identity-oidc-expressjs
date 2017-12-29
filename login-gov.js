@@ -20,7 +20,7 @@ loginGov.clientOptions = {
 
 loginGov.params = {
   response_type: 'code',
-  acr_values: 'http://idmanagement.gov/ns/assurance/loa/1',
+  acr_values: 'http://idmanagement.gov/ns/assurance/loa/3',
   scope: 'openid email address phone profile:birthdate profile:name profile social_security_number',
   redirect_uri: 'http://localhost:9393/auth/login-gov/callback',
   nonce: randomString(32),

@@ -171,7 +171,48 @@ To configure a locally-running login.gov instance, add a new cert to identity-id
 
 After the database contains the new provider, authorization responses should stop returning client configuration errors. They do.
 
-Subsequent "token requests" made from this app to the identity-idp result in `connect ECONNREFUSED 127.0.0.1:3000` errors. Trying to request `127.0.0.1:3000` instead of `localhost:3000` in a browser produces the same error. This was the same error that occurred when trying to auto-discover the local identity-idp. Basically some part of the stack of this oidc/passport/express application is trying to send a request to `127.0.0.1` but not able to find the server that way. After lots of googling, finally an SO post [reveals](https://stackoverflow.com/a/42157085/670433) an alternative strategy for running the identity-idp locally: `rails s -b 0.0.0.0`. Not sure what the -b option does, because it is not included in the help documentation. But it allows the client application to find the server. And it allows the auto-discovery.
+Subsequent "token requests" made from this app to the identity-idp result in `connect ECONNREFUSED 127.0.0.1:3000` errors. Trying to request `127.0.0.1:3000` instead of `localhost:3000` in a browser produces the same error. This was the same error that occurred when trying to auto-discover the local identity-idp. Basically some part of the stack of this oidc/passport/express application is trying to send a request to `127.0.0.1` but not able to find the server that way. After lots of googling, finally an SO post [reveals](https://stackoverflow.com/a/42157085/670433) an alternative strategy for running the identity-idp locally: `rails s -b 0.0.0.0`. Not sure what the -b option does, because it is not included in the help documentation. But it allows the client application to find the server. And it allows the auto-discovery. However, this causes issues with how mailcatcher is run, so emails are not received while running the server this way. Yikes. But it turns out they are still sent, and are accessible after-the-fact (when the server and mailcatcher are subsequently re-run using `make run`).
+
+#### User Profile Info
+
+Here is the information getting returned using LOA1:
+
+```js
+{ sub: 'c0d4a468-f73f-4c8e-9727-1018cf488001',
+  iss: 'http://localhost:3000/',
+  email: 'def4567@gsa.gov',
+  email_verified: true,
+  given_name: null,
+  family_name: null,
+  birthdate: null,
+  social_security_number: null,
+  address: null,
+  phone: null,
+  phone_verified: null }
+```
+
+The login.gov OIDC docs state that the `sub` attribute represents a unique identifier. I assume it is relevant/unique only within the context of the given issuer (`iss`). I tested these values are different for different local users, and they are indeed different. This suggests `sub` can be used for reference in client applications, but I would recommend also storing the issuer alongside it.
+
+Originally, I'm not seeing a place to input additional LOA3-style information into login.gov. However, a form for such information is presented when the client application makes a request using an "LOA3" ACR value. After submitting the form to the server, the server timed-out. Need to check how localhost identifications are/can be mocked like the phone verification is. Using the rails SAML client application example, it seems these requests are handled properly. Perhaps the time-outs I'm seeing for this express OIDC client application are a result of running the local server differently. Need to test by adding LOA3 capabilities to the sinatra OIDC example client. This will show whether the timeouts are an OIDC thing or a result of running the server differently. But in the meantime, after using the rails SAML app to initiate a collection of user profile information for the local user, LOA3 requests from this express.js client app produce the following information:
+
+```js
+{ sub: 'c0d4a468-f73f-4c8e-9727-1018cf488001',
+  iss: 'http://localhost:3000/',
+  email: 'def4567@gsa.gov',
+  email_verified: true,
+  given_name: 'Test',
+  family_name: 'User',
+  birthdate: '01/01/1950',
+  social_security_number: '012-34-5678',
+  address:
+   { formatted: '1600 Penn 123\nWashington, DC 20001',
+     street_address: '1600 Penn 123',
+     locality: 'Washington',
+     region: 'DC',
+     postal_code: '20001' },
+  phone: '2345678900',
+  phone_verified: true }
+```
 
 ### Views
 
@@ -185,6 +226,8 @@ Conditional checks for user:
   <a href="/auth/login-gov/logout">Logout</a>
 <% } %>
 ```
+
+> NOTE: using just `if(user)` causes an error about `user` being undefined.
 
 ## Testing Notes
 
