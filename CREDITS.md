@@ -231,7 +231,7 @@ I want to be able to create two different login buttons, one using LOA1 and one 
 
 Logging out of the client application works fine in the respect that it does not allow access to authenticated pages. But it does not log out of the login.gov application. This is reasonable.
 
-Weird, when I log out from the locally-running login.gov app, it redirects me to `http://localhost:3003/auth/saml/logout` and does not properly log out of login.gov. Even shutting down the server and restarting it doesn't change this behavior. Not sure why it wants to use the Rails client's SAML logout url. Perhaps because I created the LOA3 information that way, but still it seems like undesired behavior. Inspection of the server's logs show that a bunch of service providers have been cached by ActiveRecord (see below), so an attempt to clear the cache might fix this issue.
+Weird, when I log out from the locally-running login.gov app, it redirects me to `http://localhost:3003/auth/saml/logout` and does not properly log out of login.gov. Even shutting down the server and restarting it doesn't change this behavior. Not sure why it wants to use the Rails client's SAML logout url. Perhaps because I created the LOA3 information that way, but still it seems like undesired behavior. Inspection of the server's logs show that a bunch of service providers have been cached by ActiveRecord:
 
 ```rb
 Profile Load (0.7ms)  SELECT "profiles".* FROM "profiles" WHERE "profiles"."user_id" = $1 AND ("profiles"."verified_at" IS NOT NULL)  [["user_id", 5]]
@@ -247,7 +247,9 @@ Profile Load (0.7ms)  SELECT "profiles".* FROM "profiles" WHERE "profiles"."user
   CACHE ServiceProvider Load (0.0ms)  SELECT  "service_providers".* FROM "service_providers" WHERE "service_providers"."issuer" = $1 LIMIT $2  [["issuer", "urn:gov:gsa:openidconnect:sp:sinatra"], ["LIMIT", 1]]
 ```
 
+An attempt to clear the cache might fix this issue. Result: Neither `ActiveRecord::Base.connection.query_cache.clear` nor `User.last.reload` nor `User.last.profiles.reload` is successful at clearing the cache. FML.
 
+Another approach would be to start the SAML rails client again, and use that to logout, then hope subsequent logins don't get confused. Result: this works. I wonder if there are any real life issues with a user's ability to sign out of login.gov after signing-in using multiple providers.
 
 ### Views
 
