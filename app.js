@@ -46,7 +46,7 @@ passport.deserializeUser(function(user, done) {
   done( null, user);
 })
 
-loginGov.configure(passport) // is asynchronous
+loginGov.configure(passport, 3) // is asynchronous
 
 var auth = require('./routes/auth')(app, passport);
 
