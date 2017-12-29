@@ -65,7 +65,7 @@ Promise.all([
 ]).then(function([keystore, issuer]){
   var client = new issuer.Client(loginGov.clientOptions, keystore)
 
-  const strategy = new Strategy({client: client, params: loginGov.params}, function(tokenset, userinfo, done) {
+  const strategy = new Strategy({client: client, params: loginGov.params("1")}, function(tokenset, userinfo, done) {
     console.log("TOKEN SET", tokenset)
     console.log("USER INFO", userinfo)
     return done(null, userinfo);

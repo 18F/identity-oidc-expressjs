@@ -18,14 +18,17 @@ loginGov.clientOptions = {
   id_token_signed_response_alg: 'RS256'
 }
 
-loginGov.params = {
-  response_type: 'code',
-  acr_values: 'http://idmanagement.gov/ns/assurance/loa/3',
-  scope: 'openid email address phone profile:birthdate profile:name profile social_security_number',
-  redirect_uri: 'http://localhost:9393/auth/login-gov/callback',
-  nonce: randomString(32),
-  state: randomString(32),
-  prompt: 'select_account'
+// expects loaNumber param to be "1" or "3"
+loginGov.params = function(loaNumber){
+  return {
+    response_type: 'code',
+    acr_values: `http://idmanagement.gov/ns/assurance/loa/${loaNumber}`,
+    scope: 'openid email address phone profile:birthdate profile:name profile social_security_number',
+    redirect_uri: 'http://localhost:9393/auth/login-gov/callback',
+    nonce: randomString(32),
+    state: randomString(32),
+    prompt: 'select_account'
+  }
 }
 
 function randomString(length) {

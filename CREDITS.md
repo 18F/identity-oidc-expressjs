@@ -214,6 +214,8 @@ Originally, I'm not seeing a place to input additional LOA3-style information in
   phone_verified: true }
 ```
 
+I want to be able to create two different login buttons, one using LOA1 and one using LOA3. This would involve passing different "ACR" values as part of the authentication strategy. But the way this client is currently configured, the authentication strategy is configured when the server starts running, not when individual requests are made. It doesn't seem like there is an easy way to re-configure the server in mid-run. But it might be worth a try.
+
 ### Views
 
 Conditional checks for user:
