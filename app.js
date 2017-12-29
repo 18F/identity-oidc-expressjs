@@ -46,49 +46,9 @@ passport.deserializeUser(function(user, done) {
   done( null, user);
 })
 
+loginGov.configure(passport) // is asynchronous
+
 var auth = require('./routes/auth')(app, passport);
-
-
-
-
-
-
-
-
-var jose = require('node-jose'); // used to parse the keystore
-var Issuer = require('openid-client').Issuer;
-var Strategy = require('openid-client').Strategy;
-
-Promise.all([
-  jose.JWK.asKeyStore(loginGov.keys),
-  Issuer.discover(loginGov.discoveryUrl)
-]).then(function([keystore, issuer]){
-  var client = new issuer.Client(loginGov.clientOptions, keystore)
-
-  const strategy = new Strategy({client: client, params: loginGov.params("1")}, function(tokenset, userinfo, done) {
-    console.log("TOKEN SET", tokenset)
-    console.log("USER INFO", userinfo)
-    return done(null, userinfo);
-  })
-
-  passport.use("oidc", strategy)
-
-}).catch(function(err){
-  console.log("LOGIN.GOV CONFIGURATION ERROR", err)
-})
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
