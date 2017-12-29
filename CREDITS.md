@@ -27,6 +27,15 @@
   + [PEM vs CRT vs KEY](https://crypto.stackexchange.com/questions/43697/what-is-the-difference-between-pem-csr-key-and-crt)
   + [Node Jose](https://github.com/cisco/node-jose)
 
+### Promises
+
+  + [Mozilla Promises Reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+  + [Blog Post on Promises](http://www.datchley.name/es6-promises/) - examples of `Promise.resolve()`
+  + [Promises in Passport.js](https://github.com/jaredhanson/passport/issues/536)
+  + [Wrapping Functions inside a Bluebird Promise](https://stackoverflow.com/questions/33904054/wrap-async-method-to-return-a-promise-bluebird)
+  + [Bluebird `method` docs](http://bluebirdjs.com/docs/api/promise.method.html)
+
+
 ## Development Process Notes
 
 ### Setup

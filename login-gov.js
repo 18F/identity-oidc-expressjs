@@ -4,6 +4,7 @@ var pem2jwk = require('pem-jwk').pem2jwk // used to convert key file from PEM to
 var jose = require('node-jose'); // used to parse the keystore
 var Issuer = require('openid-client').Issuer;
 var Strategy = require('openid-client').Strategy;
+//var BluebirdPromise = require("bluebird");
 
 const loginGov = {}
 
@@ -20,7 +21,6 @@ const clientOptions = {
   id_token_signed_response_alg: 'RS256'
 }
 
-// expects loaNumber param to be "1" or "3"
 function strategyParams(loaNumber){
   if (parseInt(loaNumber) != 1 && parseInt(loaNumber) != 3) { throw "OOPS PLEASE CHOOSE A VALID LOA (expecting '1' OR '3')" }
   return {
@@ -34,7 +34,6 @@ function strategyParams(loaNumber){
   }
 }
 
-// expects loaNumber param to be "1" or "3"
 loginGov.configure = function(passport, loaNumber){
   Promise.all([
     jose.JWK.asKeyStore(keys),
@@ -50,10 +49,22 @@ loginGov.configure = function(passport, loaNumber){
 
     passport.use("oidc", strategy)
 
+    console.log("LOGIN.GOV CONFIGURATION SUCCESS", `(LOA${loaNumber})`)
+
   }).catch(function(err){
     console.log("LOGIN.GOV CONFIGURATION ERROR", err)
   })
 }
+
+loginGov.reconfigure = function(passport, loaNumber){
+  return Promise.resolve("LOGIN.GOV RECONFIGURATION SUCCESS")
+  
+  //return loginGov.configure(passport, loaNumber).then(function(){
+  //  return Promise.resolve("LOGIN.GOV RECONFIGURATION SUCCESS")
+  //})
+}
+
+
 
 function randomString(length) {
   return crypto.randomBytes(length).toString('hex')
