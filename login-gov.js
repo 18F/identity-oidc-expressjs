@@ -22,12 +22,11 @@ const clientOptions = {
 }
 
 function strategyParams(loaNumber){
-  if (parseInt(loaNumber) != 1 && parseInt(loaNumber) != 3) { throw "OOPS PLEASE CHOOSE A VALID LOA (expecting '1' OR '3')" }
   return {
     response_type: 'code',
     acr_values: `http://idmanagement.gov/ns/assurance/loa/${loaNumber}`,
     scope: 'openid email address phone profile:birthdate profile:name profile social_security_number',
-    redirect_uri: 'http://localhost:9393/auth/login-gov/callback',
+    redirect_uri: `http://localhost:9393/auth/login-gov/callback/loa-${loaNumber}`,
     nonce: randomString(32),
     state: randomString(32),
     prompt: 'select_account'
@@ -35,6 +34,8 @@ function strategyParams(loaNumber){
 }
 
 loginGov.configure = function(passport, loaNumber){
+  if (parseInt(loaNumber) != 1 && parseInt(loaNumber) != 3) { throw "OOPS PLEASE CHOOSE A VALID LOA (expecting '1' OR '3')" }
+
   Promise.all([
     jose.JWK.asKeyStore(keys),
     Issuer.discover(discoveryUrl)
@@ -47,7 +48,7 @@ loginGov.configure = function(passport, loaNumber){
       return done(null, userinfo);
     })
 
-    passport.use("oidc", strategy)
+    passport.use(`oidc-loa-${loaNumber}`, strategy)
 
     console.log("LOGIN.GOV CONFIGURATION SUCCESS", `(LOA${loaNumber})`)
 
@@ -56,13 +57,13 @@ loginGov.configure = function(passport, loaNumber){
   })
 }
 
-loginGov.reconfigure = function(passport, loaNumber){
-  return Promise.resolve("LOGIN.GOV RECONFIGURATION SUCCESS")
-  
-  //return loginGov.configure(passport, loaNumber).then(function(){
-  //  return Promise.resolve("LOGIN.GOV RECONFIGURATION SUCCESS")
-  //})
-}
+//loginGov.reconfigure = function(passport, loaNumber){
+//  return Promise.resolve("LOGIN.GOV RECONFIGURATION SUCCESS")
+//
+//  //return loginGov.configure(passport, loaNumber).then(function(){
+//  //  return Promise.resolve("LOGIN.GOV RECONFIGURATION SUCCESS")
+//  //})
+//}
 
 
 

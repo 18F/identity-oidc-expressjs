@@ -4,33 +4,15 @@ module.exports = function(app, passport) {
 
     // LOGIN
 
-    app.get('/auth/login-gov/login', passport.authenticate('oidc')) // use default strategy (from app.js)
-
-    app.get('/auth/login-gov/login/loa1', function(req, res){
-      // change the strategy on the fly
-      loginGov.reconfigure(passport, 1).then(function(result){
-        console.log(result)
-        console.log("RE-AUTHENTICATING PASSPORT USING LOA1")
-        passport.authenticate('oidc')
-      }).catch(function(){
-        throw "LOGIN.GOV RECONFIGURATION ERROR"
-      })
-    })
-
-    app.get('/auth/login-gov/login/loa3', function(req, res){
-      // change the strategy on the fly
-      loginGov.reconfigure(passport, 3).then(function(result){
-        console.log(result)
-        console.log("RE-AUTHENTICATING PASSPORT USING LOA3")
-        passport.authenticate('oidc')
-      }).catch(function(){
-        throw "LOGIN.GOV RECONFIGURATION ERROR"
-      })
-    })
+    //app.get('/auth/login-gov/login', passport.authenticate('oidc')) // use default strategy (from app.js)
+    app.get('/auth/login-gov/login/loa-1', passport.authenticate('oidc-loa-1')) // use default strategy (from app.js)
+    app.get('/auth/login-gov/login/loa-3', passport.authenticate('oidc-loa-3')) // use default strategy (from app.js)
 
     // CALLBACK
 
-    app.get('/auth/login-gov/callback', passport.authenticate('oidc', {successRedirect:'/profile', failureRedirect:'/'}) )
+    //app.get('/auth/login-gov/callback', passport.authenticate('oidc', {successRedirect:'/profile', failureRedirect:'/'}) )
+    app.get('/auth/login-gov/callback/loa-1', passport.authenticate('oidc-loa-1', {successRedirect:'/profile', failureRedirect:'/'}) )
+    app.get('/auth/login-gov/callback/loa-3', passport.authenticate('oidc-loa-3', {successRedirect:'/profile', failureRedirect:'/'}) )
 
     // LOGOUT
 

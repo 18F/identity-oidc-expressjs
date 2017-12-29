@@ -18,6 +18,8 @@
   + [Setting up a new express app](https://github.com/prof-rossetti/southernct-csc-443-01-201701/blob/master/projects/crud-application/checkpoints/)
   + [A previous Express project](https://github.com/data-creative/express-on-rails-starter-app/blob/starter/app.js)
   + [Passport.js Docs](http://www.passportjs.org/docs/)
+  + [Using multiple Passport strategies - gist](https://gist.github.com/joshbirk/1732068)
+  + [Using multiple Passport strategies - issue comment](https://github.com/jaredhanson/passport/issues/287#issuecomment-58188179)
 
 ### Auth
 
