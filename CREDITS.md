@@ -225,7 +225,29 @@ Originally, I'm not seeing a place to input additional LOA3-style information in
   phone_verified: true }
 ```
 
-I want to be able to create two different login buttons, one using LOA1 and one using LOA3. This would involve passing different "ACR" values as part of the authentication strategy. But the way this client is currently configured, the authentication strategy is configured when the server starts running, not when individual requests are made. It doesn't seem like there is an easy way to re-configure the server in mid-run. But it might be worth a try.
+I want to be able to create two different login buttons, one using LOA1 and one using LOA3. This would involve passing different "ACR" values as part of the authentication strategy. But the way this client is currently configured, the authentication strategy is configured when the server starts running, not when individual requests are made. It doesn't seem like there is an easy way to re-configure the server in mid-run. But it might be worth a try. Edit: done using both configurations, not one or the other.
+
+#### Logging Out
+
+Logging out of the client application works fine in the respect that it does not allow access to authenticated pages. But it does not log out of the login.gov application. This is reasonable.
+
+Weird, when I log out from the locally-running login.gov app, it redirects me to `http://localhost:3003/auth/saml/logout` and does not properly log out of login.gov. Even shutting down the server and restarting it doesn't change this behavior. Not sure why it wants to use the Rails client's SAML logout url. Perhaps because I created the LOA3 information that way, but still it seems like undesired behavior. Inspection of the server's logs show that a bunch of service providers have been cached by ActiveRecord (see below), so an attempt to clear the cache might fix this issue.
+
+```rb
+Profile Load (0.7ms)  SELECT "profiles".* FROM "profiles" WHERE "profiles"."user_id" = $1 AND ("profiles"."verified_at" IS NOT NULL)  [["user_id", 5]]
+  CACHE Profile Load (0.0ms)  SELECT  "profiles".* FROM "profiles" WHERE "profiles"."user_id" = $1 ORDER BY "profiles"."activated_at" DESC LIMIT $2  [["user_id", 5], ["LIMIT", 1]]
+  Event Load (0.5ms)  SELECT  "events".* FROM "events" WHERE "events"."user_id" = $1 ORDER BY created_at DESC LIMIT $2  [["user_id", 5], ["LIMIT", 5]]
+  Identity Load (0.8ms)  SELECT "identities".* FROM "identities" WHERE "identities"."user_id" = $1 ORDER BY last_authenticated_at DESC  [["user_id", 5]]
+  CACHE ServiceProvider Load (0.0ms)  SELECT  "service_providers".* FROM "service_providers" WHERE "service_providers"."issuer" = $1 LIMIT $2  [["issuer", "urn:gov:gsa:openidconnect:sp:expressjs"], ["LIMIT", 1]]
+  CACHE ServiceProvider Load (0.0ms)  SELECT  "service_providers".* FROM "service_providers" WHERE "service_providers"."issuer" = $1 LIMIT $2  [["issuer", "urn:gov:gsa:openidconnect:sp:expressjs"], ["LIMIT", 1]]
+  ServiceProvider Load (0.6ms)  SELECT  "service_providers".* FROM "service_providers" WHERE "service_providers"."issuer" = $1 LIMIT $2  [["issuer", "urn:gov:gsa:SAML:2.0.profiles:sp:sso:localhost-rails"], ["LIMIT", 1]]
+  CACHE ServiceProvider Load (0.0ms)  SELECT  "service_providers".* FROM "service_providers" WHERE "service_providers"."issuer" = $1 LIMIT $2  [["issuer", "urn:gov:gsa:SAML:2.0.profiles:sp:sso:localhost-rails"], ["LIMIT", 1]]
+  CACHE ServiceProvider Load (0.0ms)  SELECT  "service_providers".* FROM "service_providers" WHERE "service_providers"."issuer" = $1 LIMIT $2  [["issuer", "urn:gov:gsa:SAML:2.0.profiles:sp:sso:localhost-rails"], ["LIMIT", 1]]
+  ServiceProvider Load (0.7ms)  SELECT  "service_providers".* FROM "service_providers" WHERE "service_providers"."issuer" = $1 LIMIT $2  [["issuer", "urn:gov:gsa:openidconnect:sp:sinatra"], ["LIMIT", 1]]
+  CACHE ServiceProvider Load (0.0ms)  SELECT  "service_providers".* FROM "service_providers" WHERE "service_providers"."issuer" = $1 LIMIT $2  [["issuer", "urn:gov:gsa:openidconnect:sp:sinatra"], ["LIMIT", 1]]
+```
+
+
 
 ### Views
 
