@@ -249,7 +249,9 @@ Profile Load (0.7ms)  SELECT "profiles".* FROM "profiles" WHERE "profiles"."user
 
 An attempt to clear the cache might fix this issue. Result: Neither `ActiveRecord::Base.connection.query_cache.clear` nor `User.last.reload` nor `User.last.profiles.reload` is successful at clearing the cache. FML.
 
-Another approach would be to start the SAML rails client again, and use that to logout, then hope subsequent logins don't get confused. Result: this works. I wonder if there are any real life issues with a user's ability to sign out of login.gov after signing-in using multiple providers.
+Another approach would be to start the SAML rails client again, and use that to logout, then hope subsequent logins don't get confused. Result: this works. And the database caching is still happening, so that wasn't the issue.
+
+I wonder if there are any real life issues with a user's ability to sign out of login.gov after signing-in using multiple providers.
 
 ### Views
 
