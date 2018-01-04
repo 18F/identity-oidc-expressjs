@@ -51,8 +51,8 @@ npm install express-generator -g
 Generate a new app:
 
 ```shell
-express --view=ejs my-identity-sp
-cd my-identity-sp
+express --view=ejs identity-oidc-expressjs
+cd identity-oidc-expressjs
 ```
 
 Install package dependencies:
@@ -64,7 +64,7 @@ npm install # then .gitignore node_modules
 Change in `bin/www` this app's port to 9292 to not conflict with the idp app already running locally on 3000, and to coincide with whitelisted client config. Then run this app locally in debug mode:
 
 ```shell
-DEBUG=my-identity-sp:* npm start # then view localhost:9292 in a browser
+DEBUG=identity-oidc-expressjs:* npm start # then view localhost:9292 in a browser
 ```
 
 Upgrade local dev server by installing nodemon (`npm install nodemon -g`) and updating the "start" command in `package.json` to invoke it.

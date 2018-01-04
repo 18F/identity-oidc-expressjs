@@ -30,8 +30,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
   //cookie: { maxAge: 60000 },
   //store: sessionStore,
-  secret: process.env.SESSION_SECRET || 'my-identity-sp-secret',
-  name: 'my-identity-sp-session',
+  secret: process.env.SESSION_SECRET || 'identity-oidc-expressjs-secret',
+  name: 'identity-oidc-expressjs-session',
   resave: false,
   saveUninitialized: true
 }));
