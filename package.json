@@ -7,7 +7,6 @@
     "keygen": "node ./bin/generate_keys"
   },
   "dependencies": {
-    "bluebird": "^3.5.1",
     "body-parser": "~1.18.2",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
