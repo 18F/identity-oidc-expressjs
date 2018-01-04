@@ -7,13 +7,15 @@ var bodyParser = require('body-parser');
 var passport = require('passport');
 var session = require('express-session');
 
-var loginGov = require('./login-gov')
+var loginGovStrategy = require('./login-gov');
+
+var loginGovRoutes = require('./routes/auth/login-gov');
 var index = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
 
-app.locals.title = "Login.gov OIDC Client (Express.js)"
+app.locals.title = "Login.gov OIDC Client (Express.js)";
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -28,8 +30,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({
-  //cookie: { maxAge: 60000 },
-  //store: sessionStore,
   secret: process.env.SESSION_SECRET || 'identity-oidc-expressjs-secret',
   name: 'identity-oidc-expressjs-session',
   resave: false,
@@ -39,21 +39,13 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-passport.serializeUser(function(user, done) {
-  done(null, user);
-});
-passport.deserializeUser(function(user, done) {
-  done( null, user);
-})
+passport.serializeUser(function(user, done) { done(null, user); });
+passport.deserializeUser(function(user, done) { done( null, user); }); // this is where you might fetch a user record from the database. see http://www.passportjs.org/docs/configure/#sessions
 
-loginGov.configure(passport, 1)
-loginGov.configure(passport, 3)
+loginGovStrategy.configure(passport, 1); // configure LOA1 strategy
+loginGovStrategy.configure(passport, 3); // configure LOA3 strategy
 
-var auth = require('./routes/auth')(app, passport);
-
-
-
-
+loginGovRoutes.configure(app, passport); // use login.gov auth routes
 app.use('/', index);
 app.use('/users', users);
 
