@@ -4,11 +4,10 @@ var pem2jwk = require('pem-jwk').pem2jwk // used to convert key file from PEM to
 var jose = require('node-jose'); // used to parse the keystore
 var Issuer = require('openid-client').Issuer;
 var Strategy = require('openid-client').Strategy;
-//var BluebirdPromise = require("bluebird");
 
 const loginGov = {}
 
-const keyFile = './keys/local/sinatra_demo_sp.key'
+const keyFile = './keys/login-gov/expressjs_demo_sp.key'
 const key = fs.readFileSync(keyFile, 'ascii')
 const jwk = pem2jwk(key)
 const keys = [jwk]
@@ -56,16 +55,6 @@ loginGov.configure = function(passport, loaNumber){
     console.log("LOGIN.GOV CONFIGURATION ERROR", err)
   })
 }
-
-//loginGov.reconfigure = function(passport, loaNumber){
-//  return Promise.resolve("LOGIN.GOV RECONFIGURATION SUCCESS")
-//
-//  //return loginGov.configure(passport, loaNumber).then(function(){
-//  //  return Promise.resolve("LOGIN.GOV RECONFIGURATION SUCCESS")
-//  //})
-//}
-
-
 
 function randomString(length) {
   return crypto.randomBytes(length).toString('hex')

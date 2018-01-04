@@ -268,6 +268,43 @@ Conditional checks for user:
 
 > NOTE: using just `if(user)` causes an error about `user` being undefined.
 
+### Generating Keys
+
+Following instructions from https://developers.login.gov/certs/.
+
+Adding an `openssl.conf` file to this repo. Asked a question about whether it needs to be gitignored. Also asked a question about whether http://localhost:9393/ can be used as the `commonName`.
+
+Running the following command from this repo's root directory to produce new keys:
+
+```sh
+openssl req -x509 -sha256 -days 365 -newkey rsa:2048 -keyout keys/login-gov/expressjs_demo_sp.key -out keys/login-gov/expressjs_demo_sp.crt -config keys/login-gov/openssl.conf
+```
+
+Asked for a passphrase. Entering one.
+
+The private key would normally absolutely need to be gitignored, but this is an example application, so including it in the repo.
+
+Re-configuring the server to use this new cert instead of the sinatra one.
+
+Re-configuring the client to use the new key.
+
+Testing against localhost. The client server doesn't work. Checking the .key file, and noticing it includes a `Proc-Type` and `DEK-Info` which I don't see in the sinatra .key file:
+
+    -----BEGIN RSA PRIVATE KEY-----
+    Proc-Type: 4,ENCRYPTED
+    DEK-Info: DES-EDE3-CBC,99F543CAB27207A3
+
+Attempting to generate a new key, this time passphrase-less. It doesn't allow me to do this.
+
+Attempting to generate a new key, this time using a non-localhost `commonName`. No luck.
+
+Got a hot tip in Slack about generating using the `-nodes` flag. This works! So final command is:
+
+```sh
+openssl req -x509 -sha256 -days 365 -newkey rsa:2048 -nodes -keyout keys/login-gov/expressjs_demo_
+sp.key -out keys/login-gov/expressjs_demo_sp.crt -config keys/login-gov/openssl.conf
+```
+
 ## Testing Notes
 
 To test:
