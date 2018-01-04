@@ -4,9 +4,9 @@ module.exports = function(app, passport) {
 
     // LOGIN
 
-    //app.get('/auth/login-gov/login', passport.authenticate('oidc')) // use default strategy (from app.js)
-    app.get('/auth/login-gov/login/loa-1', passport.authenticate('oidc-loa-1')) // use default strategy (from app.js)
-    app.get('/auth/login-gov/login/loa-3', passport.authenticate('oidc-loa-3')) // use default strategy (from app.js)
+    //app.get('/auth/login-gov/login', passport.authenticate('oidc'))
+    app.get('/auth/login-gov/login/loa-1', passport.authenticate('oidc-loa-1'))
+    app.get('/auth/login-gov/login/loa-3', passport.authenticate('oidc-loa-3'))
 
     // CALLBACK
 
