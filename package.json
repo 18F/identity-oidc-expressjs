@@ -1,5 +1,5 @@
 {
-  "name": "my-identity-sp",
+  "name": "identity-oidc-expressjs",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -11,7 +11,12 @@
     "debug": "~2.6.9",
     "ejs": "~2.5.7",
     "express": "~4.15.5",
+    "express-session": "^1.15.6",
     "morgan": "~1.9.0",
+    "node-jose": "^0.11.0",
+    "openid-client": "^1.19.0",
+    "passport": "^0.4.0",
+    "pem-jwk": "^1.5.1",
     "serve-favicon": "~2.4.5"
   }
 }

@@ -1,38 +1,43 @@
 # Credits, Notes, and Reference
 
-This project is based on an [example express service provider](https://github.com/18F/identity-oidc-nodejs-express) and corresponding instructions in that repo.
-
 ## Links
 
-  + [Running express apps in debug mode](https://expressjs.com/en/guide/debugging.html)
-  + [Setting up a new express app](https://github.com/prof-rossetti/southernct-csc-443-01-201701/blob/master/projects/crud-application/checkpoints/)
+### Login.gov
+
   + [Login.gov developer documentation](https://developers.login.gov/)
+  + [Login.gov OIDC documentation](https://developers.login.gov/openid-connect/#developer-portal)
+  + [Registered Login.gov Service Providers](https://github.com/18F/identity-idp/blob/master/config/service_providers.yml#L125-L129)
+  + [Login.gov OIDC Sinatra Client](https://github.com/18F/identity-sp-sinatra)
+  + [Login.gov SAML Rails Client](https://github.com/18F/identity-sp-rails)
+  + [18F's U.S. Forest Service Intake Module](https://github.com/18F/fs-intake-module/blob/master/server/src/auth/login-gov.es6) - a super helpful Login.gov client implementation using Express.js and Passport.js
+  + Login.gov OIDC Auto-Discovery URLs:
+    + https://localhost:3000/.well-known/openid-configuration
+    + https://idp.int.login.gov/.well-known/openid-configuration
+  + [Alternative run strategy](https://stackoverflow.com/a/42157085/670433) - essential solution for bypassing client request errors produced by the `openid-client` package
 
-## Development Process
+### Node.js and Express.js
 
-Install NVM and Node.js. Install Express Generator:
+  + [A previous Express.js project by the author](https://github.com/data-creative/express-on-rails-starter-app/blob/starter/app.js)
+  + [A previous Express.js tutorial by the author](https://github.com/prof-rossetti/southernct-csc-443-01-201701/blob/master/projects/crud-application/checkpoints/)
+  + [Running Express.js apps in debug mode](https://expressjs.com/en/guide/debugging.html)
 
-```shell
-npm install express-generator -g
-```
+### Passport.js
 
-Generate a new app:
+  + [Passport.js Docs](http://www.passportjs.org/docs/)
+  + [Using multiple Passport strategies - gist](https://gist.github.com/joshbirk/1732068)
+  + [Using multiple Passport strategies - issue comment](https://github.com/jaredhanson/passport/issues/287#issuecomment-58188179)
 
-```shell
-express --view=ejs my-identity-sp
-cd my-identity-sp
-```
+### Authentication and OIDC
 
-Install package dependencies:
+  + [Node.js + Passport.js OIDC Demo / Walkthrough](https://github.com/srmoore/oidc_nodejs_demo) - very helpful for understanding OIDC mechanics and implementation using Passport.js
+  + [`openid-client`](https://github.com/panva/node-openid-client)
+  + [JSON Web Tokens (JWT)](https://jwt.io/)
+  + [Converting PEM to JWK](https://github.com/dannycoates/pem-jwk)
+  + [PEM vs CRT vs KEY](https://crypto.stackexchange.com/questions/43697/what-is-the-difference-between-pem-csr-key-and-crt)
+  + [Node Jose](https://github.com/cisco/node-jose)
 
-```shell
-npm install # then .gitignore node_modules
-```
+### Assets
 
-Change in `bin/www` this app's port to 3030 to not conflict with the idp app already running locally on 3000. Then run this app locally in debug mode:
-
-```shell
-DEBUG=my-identity-sp:* npm start # then view localhost:3030 in a browser
-```
-
-Upgrade local dev server by installing nodemon (`npm install nodemon -g`) and updating the "start" command in `package.json` to invoke it.
+  + [Login.gov SVG](https://github.com/18F/identity-sp-sinatra/blob/master/public/img/login-gov.svg)
+  + [Stylesheet](https://github.com/18F/identity-sp-sinatra/blob/master/public/css/lib/basscss.min.css)
+  + [Page Content](https://github.com/18F/identity-sp-sinatra/blob/master/views/success.erb)

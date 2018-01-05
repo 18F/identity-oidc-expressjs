@@ -1,0 +1,17 @@
+<div class="p2 bg-green white clearfix">
+  <% if(typeof(user) != "undefined"){ %>
+    <div class="right sm-show">
+      <a href="/auth/login-gov/logout">Logout</a>
+    </div>
+
+    <span class="bold">Success!</span>
+
+    <span>Email: <strong><%= user.email %></strong></span>
+
+    <% if(user.given_name && user.family_name){ %>
+      <span class="ml1 mr1">|</span>
+
+      <span>Name: <strong><%= `${user.given_name} ${user.family_name}` %></strong></span>
+    <% } %>
+  <% } %>
+</div>
