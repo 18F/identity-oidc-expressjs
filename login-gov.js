@@ -1,9 +1,9 @@
-var crypto = require('crypto');
-var fs = require('fs');
-var pem2jwk = require('pem-jwk').pem2jwk;
-var jose = require('node-jose');
-var Issuer = require('openid-client').Issuer;
-var Strategy = require('openid-client').Strategy;
+const crypto = require('crypto');
+const fs = require('fs');
+const pem2jwk = require('pem-jwk').pem2jwk;
+const jose = require('node-jose');
+const Issuer = require('openid-client').Issuer;
+const Strategy = require('openid-client').Strategy;
 
 const loginGov = {};
 
@@ -60,7 +60,7 @@ loginGov.configure = function(passport, loaNumber){
 };
 
 function randomString(length) {
-  return crypto.randomBytes(length).toString('hex');
+  return crypto.randomBytes(length).toString('hex'); // source: https://github.com/18F/fs-permit-platform/blob/c613a73ae320980e226d301d0b34881f9d954758/server/src/util.es6#L232-L237
 };
 
 module.exports = loginGov;
