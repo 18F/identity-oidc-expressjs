@@ -1,6 +1,6 @@
 # identity-oidc-expressjs
 
-An example OIDC service provider to authenticate users with login.gov. Built with Node.js, Express.js, and Passport.js.
+An example [Login.gov](https://login.gov/) client application which authenticates users via OpenID Connect (OIDC). Built with Node.js, Express.js, and Passport.js.
 
 This example service provider is configured to run on http://localhost:9393.
 
