@@ -38,7 +38,7 @@ loginGov.configure = function(passport, loaNumber){
   Promise.all([
     jose.JWK.asKeyStore(keys),
     Issuer.discover(discoveryUrl)
-  ]).then(function([keystore, issuer]){
+  ]).then(function(keystore, issuer){
     const client = new issuer.Client(clientOptions, keystore);
 
     const strategy = new Strategy(
