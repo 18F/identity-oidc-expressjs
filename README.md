@@ -48,4 +48,4 @@ Run this client application on a local webserver:
 DEBUG=identity-oidc-expressjs:* npm start # then view localhost:9393 in a browser
 ```
 
-## [License](LICENSE)
+## [License](LICENSE.md)
