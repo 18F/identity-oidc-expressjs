@@ -28,13 +28,13 @@ npm install
 
 ### Choose a Login.gov Environment
 
-Right now this app is hard-coded to authenticate against a locally-running Login.gov server. Once this application's credentials get propagated to the Login.gov integration server, this application will be modified to allow you to choose a Login.gov environment by setting an environment variable called `LOGIN_GOV_DISCOVERY_URL`. Stay tuned!
-
 #### Integration Server
 
-Coming Soon.
+Set the `DISCOVERY_URL` environment variable to `https://idp.int.login.gov/`.
 
 #### Local Server
+
+Set the `DISCOVERY_URL` environment variable to `http://localhost:3000`.
 
 Run a [Login.gov (`identity-idp`)](https://github.com/18F/identity-idp/) instance locally on port 3000.
 

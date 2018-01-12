@@ -14,6 +14,7 @@
     + https://localhost:3000/.well-known/openid-configuration
     + https://idp.int.login.gov/.well-known/openid-configuration
   + [Alternative run strategy](https://stackoverflow.com/a/42157085/670433) - essential solution for bypassing client request errors produced by the `openid-client` package
+  + [Example service provider environment configuration](https://github.com/18F/identity-openidconnect-sinatra/blob/master/.env.example)
 
 ### Node.js and Express.js
 
