@@ -1,4 +1,4 @@
-const loginGovRoutes = {};
+var loginGovRoutes = {};
 
 loginGovRoutes.configure = function(app, passport) {
 

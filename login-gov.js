@@ -1,20 +1,20 @@
-const crypto = require('crypto');
-const fs = require('fs');
-const pem2jwk = require('pem-jwk').pem2jwk;
-const jose = require('node-jose');
-const Issuer = require('openid-client').Issuer;
-const Strategy = require('openid-client').Strategy;
+var crypto = require('crypto');
+var fs = require('fs');
+var pem2jwk = require('pem-jwk').pem2jwk;
+var jose = require('node-jose');
+var Issuer = require('openid-client').Issuer;
+var Strategy = require('openid-client').Strategy;
 
-const loginGov = {};
+var loginGov = {};
 
-const keyFile = './keys/login-gov/expressjs_demo_sp.key';
-const key = fs.readFileSync(keyFile, 'ascii');
-const jwk = pem2jwk(key);
-const keys = [jwk];
+var keyFile = './keys/login-gov/expressjs_demo_sp.key';
+var key = fs.readFileSync(keyFile, 'ascii');
+var jwk = pem2jwk(key);
+var keys = [jwk];
 
-const discoveryUrl = 'http://localhost:3000'; // TODO: read from environment variable, allow user to differentiate between localhost and 'https://idp.int.login.gov/'
+var discoveryUrl = 'http://localhost:3000'; // TODO: read from environment variable, allow user to differentiate between localhost and 'https://idp.int.login.gov/'
 
-const clientOptions = {
+var clientOptions = {
   client_id: 'urn:gov:gsa:openidconnect:sp:expressjs',
   token_endpoint_auth_method: 'private_key_jwt',
   id_token_signed_response_alg: 'RS256'
@@ -38,10 +38,10 @@ loginGov.configure = function(passport, loaNumber){
   Promise.all([
     jose.JWK.asKeyStore(keys),
     Issuer.discover(discoveryUrl)
-  ]).then(function(keystore, issuer){
-    const client = new issuer.Client(clientOptions, keystore);
+  ]).then(function([keystore, issuer]){
+    var client = new issuer.Client(clientOptions, keystore);
 
-    const strategy = new Strategy(
+    var strategy = new Strategy(
       {client: client, params: strategyParams(loaNumber)},
       function(tokenset, userinfo, done) {
         console.log("TOKEN SET", Object.keys(tokenset), tokenset)
