@@ -15,13 +15,8 @@ loginGovRoutes.configure = function(app, passport) {
     // ... app.get('/auth/login-gov/callback', passport.authenticate('oidc', {successRedirect:'/profile', failureRedirect:'/'}) )
     //
 
-    if (process.env.CLIENT_ID == "urn:gov:gsa:openidconnect:sp:sinatra") { // temporarily acting as the sinatra app, set via .env file
-      app.get('/', passport.authenticate('oidc-loa-1', {successRedirect:'/profile', failureRedirect:'/'}) );
-      app.get('/', passport.authenticate('oidc-loa-3', {successRedirect:'/profile', failureRedirect:'/'}) );
-    } else {
-      app.get('/auth/login-gov/callback/loa-1', passport.authenticate('oidc-loa-1', {successRedirect:'/profile', failureRedirect:'/'}) );
-      app.get('/auth/login-gov/callback/loa-3', passport.authenticate('oidc-loa-3', {successRedirect:'/profile', failureRedirect:'/'}) );
-    } // TODO: after done acting as the sinatra app, remove this if statement and keep only the code inside the else clause
+    app.get('/auth/login-gov/callback/loa-1', passport.authenticate('oidc-loa-1', {successRedirect:'/profile', failureRedirect:'/'}) );
+    app.get('/auth/login-gov/callback/loa-3', passport.authenticate('oidc-loa-3', {successRedirect:'/profile', failureRedirect:'/'}) );
 
     //
     // LOGOUT

@@ -21,18 +21,11 @@ var clientOptions = {
 };
 
 function strategyParams(loaNumber){
-  var redirectURI; // temporarily acting as sinatra app
-  if (process.env.CLIENT_ID == "urn:gov:gsa:openidconnect:sp:sinatra") { // temporarily acting as the sinatra app, set via .env file
-    redirectURI = `http://localhost:${process.env.PORT}/`
-  } else {
-    redirectURI = `http://localhost:${process.env.PORT}/auth/login-gov/callback/loa-${loaNumber}`
-  } // TODO: after done acting as the sinatra app, remove this if statement and keep only the code inside the else clause
-
   return {
     response_type: 'code',
     acr_values: `http://idmanagement.gov/ns/assurance/loa/${loaNumber}`,
     scope: 'openid email address phone profile:birthdate profile:name profile social_security_number',
-    redirect_uri: redirectURI,
+    redirect_uri: `http://localhost:${(process.env.PORT || '9393')}/auth/login-gov/callback/loa-${loaNumber}`,
     nonce: randomString(32),
     state: randomString(32),
     prompt: 'select_account'
