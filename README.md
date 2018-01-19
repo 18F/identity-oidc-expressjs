@@ -36,9 +36,15 @@ Set the `DISCOVERY_URL` environment variable to `https://idp.int.login.gov/`.
 
 Set the `DISCOVERY_URL` environment variable to `http://localhost:3000`.
 
-Run a [Login.gov (`identity-idp`)](https://github.com/18F/identity-idp/) instance locally on port 3000.
+Run a [Login.gov (`identity-idp`)](https://github.com/18F/identity-idp/) instance locally on port 3000:
 
-> NOTE: the `openid-client` package attempts to make various authentication requests to `127.0.0.1:3000`, but when the Login.gov instance is running normally at `localhost:3000`, the `openid-client` requests won't be able to find it (produces `RequestError: connect ECONNREFUSED 127.0.0.1:3000` client errors). A work-around for this issue is to run Login.gov using the following command instead: `rails s -b 127.0.0.1`. However you should know that when Login.gov is run this way, it won't be able to perform the account creation process because `mailcatcher` doesn't run properly, and it won't allow users to initially set up their LOA3 information. One workaround for the account creation issue is to temporarily run the Login.gov instance normally (using the `make run` command) and use its interface to perform the account creation process, then re-run Login.gov using `rails s -b 127.0.0.1` before attempting subsequent authentication requests. And one work-around for the LOA3 setup is to use a different example client (like the [Rails version](https://github.com/18F/identity-sp-rails)) to perform the initial LOA3 authentication, then remember to log-out of that service provider, then subsequent LOA3 authentication requests should work.
+```sh
+bin/rails s -b 127.0.0.1
+bundle exec sidekiq --config config/sidekiq.yml
+mailcatcher -f
+```
+
+> NOTE: the `openid-client` package attempts to make various authentication requests to `127.0.0.1:3000`, but when the Login.gov instance is running normally on `localhost:3000` via the `make run` command, the `openid-client` requests won't be able to find it (produces `RequestError: connect ECONNREFUSED 127.0.0.1:3000` client errors). So a work-around for this issue is to run the Login.gov instance via the commands listed above. :smiley:
 
 ## Usage
 
