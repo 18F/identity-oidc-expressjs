@@ -7,15 +7,15 @@ var Strategy = require('openid-client').Strategy;
 
 var loginGov = {};
 
-var keyFile = './keys/login-gov/expressjs_demo_sp.key';
+var keyFile = process.env.KEY_FILE_PATH || './keys/login-gov/expressjs_demo_sp.key';
 var key = fs.readFileSync(keyFile, 'ascii');
 var jwk = pem2jwk(key);
 var keys = [jwk];
 
-var discoveryUrl = 'http://localhost:3000'; // TODO: read from environment variable, allow user to differentiate between localhost and 'https://idp.int.login.gov/'
+var discoveryUrl = process.env.DISCOVERY_URL || 'http://localhost:3000';
 
 var clientOptions = {
-  client_id: 'urn:gov:gsa:openidconnect:sp:expressjs',
+  client_id: process.env.CLIENT_ID || 'urn:gov:gsa:openidconnect:sp:expressjs',
   token_endpoint_auth_method: 'private_key_jwt',
   id_token_signed_response_alg: 'RS256'
 };
@@ -25,7 +25,7 @@ function strategyParams(loaNumber){
     response_type: 'code',
     acr_values: `http://idmanagement.gov/ns/assurance/loa/${loaNumber}`,
     scope: 'openid email address phone profile:birthdate profile:name profile social_security_number',
-    redirect_uri: `http://localhost:9393/auth/login-gov/callback/loa-${loaNumber}`,
+    redirect_uri: `http://localhost:${(process.env.PORT || '9393')}/auth/login-gov/callback/loa-${loaNumber}`,
     nonce: randomString(32),
     state: randomString(32),
     prompt: 'select_account'

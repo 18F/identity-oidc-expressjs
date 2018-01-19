@@ -1,3 +1,5 @@
+require('dotenv').config(); // use environment variables from .env file
+
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
