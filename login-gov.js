@@ -12,7 +12,7 @@ var key = fs.readFileSync(keyFile, 'ascii');
 var jwk = pem2jwk(key);
 var keys = [jwk];
 
-var discoveryUrl = process.env.DISCOVERY_URL || 'http://localhost:3000';
+loginGov.discoveryUrl = process.env.DISCOVERY_URL || 'http://localhost:3000';
 
 var clientOptions = {
   client_id: process.env.CLIENT_ID || 'urn:gov:gsa:openidconnect:sp:expressjs',
@@ -26,8 +26,8 @@ function strategyParams(loaNumber){
     acr_values: `http://idmanagement.gov/ns/assurance/loa/${loaNumber}`,
     scope: 'openid email address phone profile:birthdate profile:name profile social_security_number',
     redirect_uri: `http://localhost:${(process.env.PORT || '9393')}/auth/login-gov/callback/loa-${loaNumber}`,
-    nonce: randomString(32),
-    state: randomString(32),
+    nonce: loginGov.randomString(32),
+    state: loginGov.randomString(32),
     prompt: 'select_account'
   };
 };
@@ -37,7 +37,7 @@ loginGov.configure = function(passport, loaNumber){
 
   Promise.all([
     jose.JWK.asKeyStore(keys),
-    Issuer.discover(discoveryUrl)
+    Issuer.discover(loginGov.discoveryUrl)
   ]).then(function([keystore, issuer]){
     var client = new issuer.Client(clientOptions, keystore);
 
@@ -59,7 +59,7 @@ loginGov.configure = function(passport, loaNumber){
   });
 };
 
-function randomString(length) {
+loginGov.randomString = function(length) {
   return crypto.randomBytes(length).toString('hex'); // source: https://github.com/18F/fs-permit-platform/blob/c613a73ae320980e226d301d0b34881f9d954758/server/src/util.es6#L232-L237
 };
 
