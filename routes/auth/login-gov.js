@@ -41,7 +41,7 @@ loginGovRoutes.configure = function(app, passport) {
         //const logoutUrl = `${loginGov.discoveryUrl}/openid_connect/logout` // TODO: get from issuer well-known config data
         const logoutUrl = loginGov.issuer.end_session_endpoint
         const token = req.user.token
-        const logoutRedirectUrl = process.env.LOGOUT_REDIRECT_URL || `http://localhost:${(process.env.PORT || '9393')}`
+        const logoutRedirectUrl = "http://localhost:9393/"
         const state = req.user.state
         const requestUrl = `${logoutUrl}?id_token_hint=${token}&post_logout_redirect_uri=${logoutRedirectUrl}&state=${state}`
         //const requestUrl = `${logoutUrl}?id_token_hint=${token}&post_logout_redirect_uri=${logoutRedirectUrl}&state=${loginGov.randomString(32)}`
