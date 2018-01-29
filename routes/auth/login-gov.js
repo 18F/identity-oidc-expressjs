@@ -31,26 +31,22 @@ loginGovRoutes.configure = function(app, passport) {
     });
 
     // Logout from this application and from login.gov
-    app.get('/auth/login-gov/oidc-logout', function(req, res, next) {
+    // ... adapted from https://github.com/18F/fs-permit-platform/blob/6f3681a5861d96db76c279f726c23971f3e037c7/server/src/auth/passport-config.es6#L41-L56
+    app.get('/auth/login-gov/oidc-logout', function(req, res) {
         //req.logout();
 
-        const logoutUrl = `${loginGov.discoveryUrl}/openid_connect/logout` // TODO: get from issuer well-known config data
+        //console.log("LOGOUT USER", req.user)
+        //console.log("LOGOUT TOKEN", req.token)
+
+        //const logoutUrl = `${loginGov.discoveryUrl}/openid_connect/logout` // TODO: get from issuer well-known config data
+        const logoutUrl = loginGov.issuer.end_session_endpoint
+        const token = req.user.token
         const logoutRedirectUrl = process.env.LOGOUT_REDIRECT_URL || `http://localhost:${(process.env.PORT || '9393')}`
-        const token = "abc-123" // TODO: get from req.cookie OR req.session.passport.user
-        const requestUrl = `${logoutUrl}?id_token_hint=${token}&post_logout_redirect_uri=${logoutRedirectUrl}&state=${loginGov.randomString(32)}`
+        const state = req.user.state
+        const requestUrl = `${logoutUrl}?id_token_hint=${token}&post_logout_redirect_uri=${logoutRedirectUrl}&state=${state}`
+        //const requestUrl = `${logoutUrl}?id_token_hint=${token}&post_logout_redirect_uri=${logoutRedirectUrl}&state=${loginGov.randomString(32)}`
 
-        //res.redirect(logoutUrl, {
-        //  search: null,
-        //  query: {
-        //    id_token_hint: "ABC-123",
-        //    state: loginGov.randomString(32),
-        //    post_logout_redirect_uri: logoutRedirectUrl
-        //  }
-        //});
-
-        res.redirect(requestUrl);
-
-        // return next();
+        return res.redirect(requestUrl);
     });
 
 };
