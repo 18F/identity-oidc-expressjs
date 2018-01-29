@@ -9,7 +9,7 @@ var bodyParser = require('body-parser');
 var passport = require('passport');
 var session = require('express-session');
 
-var loginGovStrategy = require('./login-gov');
+var loginGov = require('./login-gov');
 
 var loginGovRoutes = require('./routes/auth/login-gov');
 var index = require('./routes/index');
@@ -44,8 +44,8 @@ app.use(passport.session());
 passport.serializeUser(function(user, done) { done(null, user); });
 passport.deserializeUser(function(user, done) { done( null, user); }); // this is where you might fetch a user record from the database. see http://www.passportjs.org/docs/configure/#sessions
 
-loginGovStrategy.configure(passport, 1); // configure LOA1 strategy
-loginGovStrategy.configure(passport, 3); // configure LOA3 strategy
+loginGov.configure(passport, 1); // configure LOA1 strategy
+loginGov.configure(passport, 3); // configure LOA3 strategy
 
 loginGovRoutes.configure(app, passport); // use login.gov auth routes
 app.use('/', index);

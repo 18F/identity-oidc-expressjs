@@ -48,9 +48,7 @@ mailcatcher -f
 
 ## Usage
 
-This application runs on http://localhost:9393 by default, however you can configure it to run on a different port by overriding the `PORT` environment variable.
-
-Run this client application on a local webserver:
+Run this client application on a local web server:
 
 ```sh
 DEBUG=identity-oidc-expressjs:* npm start # then view localhost:9393 in a browser

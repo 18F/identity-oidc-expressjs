@@ -12,7 +12,7 @@ var http = require('http');
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '9393');
+var port = normalizePort('9393'); // var port = normalizePort(process.env.PORT || '9393') // FYI login.gov as currently configured only recognizes this example client app when run on port 9393
 app.set('port', port);
 
 /**
