@@ -39,17 +39,17 @@ loginGov.configure = function(passport, loaNumber){
     jose.JWK.asKeyStore(keys),
     Issuer.discover(loginGov.discoveryUrl)
   ]).then(function([keystore, issuer]){
-    loginGov.issuer = issuer; // allow subsequent access to issuer.end_session_endpoint (required during OIDC logout)
+    loginGov.issuer = issuer; // allow subsequent access to issuer.end_session_endpoint (required during RP-Initiated Logout)
 
     var client = new issuer.Client(clientOptions, keystore);
 
     var params = strategyParams(loaNumber);
 
     var strategy = new Strategy({client: client, params: params}, function(tokenset, userinfo, done) {
-      console.log("TOKEN SET", tokenset); // don't log in production
-      console.log("USER INFO", userinfo); // don't log in production
-      userinfo.token = tokenset.id_token; // required for OIDC logout
-      userinfo.state = params.state; // required for OIDC logout
+      console.log("TOKEN SET", tokenset);
+      console.log("USER INFO", userinfo);
+      userinfo.token = tokenset.id_token; // required for RP-Initiated Logout
+      userinfo.state = params.state; // required for RP-Initiated Logout
       return done(null, userinfo);
     });
 

@@ -33,6 +33,7 @@ loginGovRoutes.configure = function(app, passport) {
     });
 
     // Logout from this application and from login.gov
+    // ... using RP-Initiated Logout
     // ... adapted from https://github.com/18F/fs-permit-platform/blob/6f3681a5861d96db76c279f726c23971f3e037c7/server/src/auth/passport-config.es6#L41-L56
     app.get('/auth/login-gov/oidc-logout', function(req, res) {
         if (loginGov.issuer && req.user) {
