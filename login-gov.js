@@ -40,20 +40,23 @@ loginGov.configure = function(passport, loaNumber){
     Issuer.discover(loginGov.discoveryUrl)
   ]).then(function([keystore, issuer]){
     loginGov.issuer = issuer; // allow subsequent access to issuer.end_session_endpoint (required during OIDC logout)
+
     var client = new issuer.Client(clientOptions, keystore);
+
     var params = strategyParams(loaNumber);
-    var strategy = new Strategy(
-      {client: client, params: params},
-      function(tokenset, userinfo, done) {
-        console.log("TOKEN SET", Object.keys(tokenset), tokenset)
-        console.log("USER INFO", Object.keys(userinfo), userinfo)
-        userinfo.token = tokenset.id_token // required for OIDC logout
-        userinfo.state = params.state // required for OIDC logout
-        return done(null, userinfo);
-      }
-    );
+
+    var strategy = new Strategy({client: client, params: params}, function(tokenset, userinfo, done) {
+      console.log("TOKEN SET", tokenset); // don't log in production
+      console.log("USER INFO", userinfo); // don't log in production
+      userinfo.token = tokenset.id_token; // required for OIDC logout
+      userinfo.state = params.state; // required for OIDC logout
+      return done(null, userinfo);
+    });
+
     passport.use(`oidc-loa-${loaNumber}`, strategy);
+
     console.log("LOGIN.GOV CONFIGURATION SUCCESS", `(LOA${loaNumber})`);
+
   }).catch(function(err){
     console.log("LOGIN.GOV CONFIGURATION ERROR", err);
   });

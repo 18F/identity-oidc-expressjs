@@ -33,20 +33,13 @@ loginGovRoutes.configure = function(app, passport) {
     // Logout from this application and from login.gov
     // ... adapted from https://github.com/18F/fs-permit-platform/blob/6f3681a5861d96db76c279f726c23971f3e037c7/server/src/auth/passport-config.es6#L41-L56
     app.get('/auth/login-gov/oidc-logout', function(req, res) {
-        //req.logout();
-
-        //console.log("LOGOUT USER", req.user)
-        //console.log("LOGOUT TOKEN", req.token)
-
-        //const logoutUrl = `${loginGov.discoveryUrl}/openid_connect/logout` // TODO: get from issuer well-known config data
-        const logoutUrl = loginGov.issuer.end_session_endpoint
-        const token = req.user.token
-        const logoutRedirectUrl = "http://localhost:9393/"
-        const state = req.user.state
-        const requestUrl = `${logoutUrl}?id_token_hint=${token}&post_logout_redirect_uri=${logoutRedirectUrl}&state=${state}`
-        //const requestUrl = `${logoutUrl}?id_token_hint=${token}&post_logout_redirect_uri=${logoutRedirectUrl}&state=${loginGov.randomString(32)}`
-
-        return res.redirect(requestUrl);
+        if (loginGov.issuer && req.user) {
+          const requestUrl = `${loginGov.issuer.end_session_endpoint}?id_token_hint=${req.user.token}&post_logout_redirect_uri=http://localhost:9393/&state=${req.user.state}`
+          return res.redirect(requestUrl);
+        } else { // safeguard if user manually navigates to this route, avoids "Cannot read property 'token' of undefined"
+          req.logout();
+          res.redirect('/');
+        };
     });
 
 };
