@@ -26,12 +26,6 @@ npm install
 
 ### Choose a Login.gov Environment
 
-#### Integration Server
-
-Set the `DISCOVERY_URL` environment variable to `https://idp.int.login.gov/`.
-
-> NOTE: currently waiting for this application's credentials to get deployed to the integration server, after which time this note will be removed and you can expect to successfully authenticate against the integration server.
-
 #### Local Server
 
 Set the `DISCOVERY_URL` environment variable to `http://localhost:3000`.
