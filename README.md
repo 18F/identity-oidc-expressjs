@@ -26,7 +26,14 @@ npm install
 
 ### Choose a Login.gov Environment
 
-#### Local Server
+#### Sandbox Environment
+
+Set the `DISCOVERY_URL` environment variable to one of the sandbox urls:
+
+  + `https://idp.dev.identitysandbox.gov`
+  + `https://idp.int.identitysandbox.gov`
+
+#### Development Environment (Local Server)
 
 Set the `DISCOVERY_URL` environment variable to `http://localhost:3000`.
 
