@@ -40,6 +40,8 @@ Set the `DISCOVERY_URL` environment variable to `http://localhost:3000`.
 Run a [Login.gov (`identity-idp`)](https://github.com/18F/identity-idp/) instance locally on port 3000:
 
 ```sh
+cd path/to/identity-idp
+
 bin/rails s -b 127.0.0.1
 bundle exec sidekiq --config config/sidekiq.yml
 mailcatcher -f
