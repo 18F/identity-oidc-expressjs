@@ -31,7 +31,7 @@ npm install
 Set the `DISCOVERY_URL` environment variable to one of the sandbox urls:
 
   + `https://idp.dev.identitysandbox.gov`
-  + `https://idp.int.identitysandbox.gov`
+  + `https://idp.int.identitysandbox.gov` (untested)
 
 #### Development Environment (Local Server)
 
