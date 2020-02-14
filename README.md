@@ -1,3 +1,10 @@
+This sample SP has been retired. It was used for early prototyping for integrations with login.gov and has not been maintained. It has confirmed vulnerabilities and should not be used for production itegrations.
+
+For maintained examples of integrations with login.gov please refer to:
+
+- https://github.com/18F/identity-saml-sinatra
+- https://github.com/18F/identity-oidc-sinatra
+
 # identity-oidc-expressjs
 
 An example [Login.gov](https://login.gov/) client application which authenticates users via OpenID Connect (OIDC). Built with [Node.js](https://nodejs.org/en/), [Express.js](https://expressjs.com/), and [Passport.js](http://www.passportjs.org/docs/). Uses the [`openid-client`](https://github.com/panva/node-openid-client) package, a certified OpenID Relaying Party, to issue authentication requests.
